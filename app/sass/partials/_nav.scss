@@ -1,0 +1,34 @@
+.p-nav {
+    
+    padding:10px 0;
+    text-align:right;
+    color:$secondary-dark;
+    font-size:14px;
+    
+    @media (min-width:$screen-md) {
+        
+        @include position(absolute,1,0,0px);
+        
+    }
+    
+    @media (min-width:$screen-xl) {
+        font-size:16px;
+        padding:15px 0;
+    }
+    
+    a {
+        @include flex(inline-flex,center);
+    }
+    
+    .icon-home {
+        
+        @include icon(16px);
+        margin-right:10px;
+        
+        @media (min-width:$screen-lg) {
+            @include icon(24px);
+        }
+        
+    }
+    
+}

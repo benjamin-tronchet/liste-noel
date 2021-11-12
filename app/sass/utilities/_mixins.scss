@@ -1,0 +1,113 @@
+// ***** Display Inline-block
+
+@mixin dsp-ib($valign:middle) {
+    
+    vertical-align: $valign;
+    display: inline-block;
+    
+}
+
+// ***** Display flex/inline-flex
+
+@mixin flex($display:flex,$align:center,$justify:flex-start,$direction:row,$wrap:wrap) {
+    
+    display:$display;
+    align-items:$align;
+    justify-content: $justify;
+    flex-direction: $direction;
+    flex-wrap: $wrap;
+    
+    &:after,
+    &:before {
+        content:normal;
+        display: none;
+    }
+    
+}
+
+// ***** Position (absolute / fixed / relative)
+
+@mixin position($position,$index:1,$top:auto,$right:auto,$bottom:auto,$left:auto) {
+    
+    position:$position;
+    top:$top;
+    bottom:$bottom;
+    left:$left;
+    right:$right;
+    z-index:$index;
+    
+}
+
+// ***** Transition
+
+@mixin transi($duration:.5s,$easing:ease,$delay:0s,$property:all,$delay-hover:0s) {
+    
+    transition-property: $property;
+    transition-duration: $duration;
+    transition-timing-function: $easing;
+    transition-delay: $delay;
+    
+    &:hover {
+        
+        transition-delay: $delay-hover;
+        
+    }
+    
+}
+
+// ***** Icons (Icomoon)
+
+@mixin icon($taille) {
+    
+    display:inline-flex;
+    font-size:$taille;
+    line-height:$taille;
+    align-items:center;
+    justify-content:center;
+    width:$taille; 
+    height:$taille;
+    
+}
+
+// ***** Fluid Font Size
+
+@function strip-unit($number) {
+    
+    @if type-of($number)=='number' and not unitless($number) {
+        @return $number / ($number * 0 + 1);
+    }
+    @return $number;
+    
+}
+
+@mixin fluid-text($min-font-size, $max-font-size, $break-start:360px, $break-end:1920px) {
+    
+    $fsm: (strip-unit($max-font-size) - strip-unit($min-font-size)) / (strip-unit($break-end) - strip-unit($break-start));
+    $fsb: #{$min-font-size - $fsm * $break-start};
+    $fsmx: #{$fsm * 100vw};
+
+    font-size: #{$min-font-size};
+    
+    @media (min-width: #{$break-start}) {
+        font-size: calc(#{$fsmx} + #{$fsb});
+    }
+    
+    @media (min-width: $break-end) {
+        font-size: #{$max-font-size};
+    }
+    
+}
+
+// ***** Border radius
+
+@mixin radius($mobile:15px,$desktop:30px) {
+    
+    border-radius:$mobile;
+    
+    @media (min-width:$screen-md) {
+        
+        border-radius:$desktop;
+        
+    }
+    
+}

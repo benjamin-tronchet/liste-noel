@@ -1,0 +1,133 @@
+.u-modal {
+    
+    @include position(fixed,-1,0,0,0,0);
+    width:100vw;
+    background:rgba($dark,.9);
+    @include transi(.5s,ease-out,.5s,all);
+    opacity:0;
+    
+    // *** Close button part
+    
+    &_close {
+        @include flex(inline-flex,center,center);
+        width:40px;
+        height:40px;
+        @include position(absolute,100,0,0);
+        cursor:pointer;
+        border-radius:50%;
+        background:$light;
+        color:$secondary-dark;
+        transform: translateY(-60px);
+        
+        &:after {
+            content: "\ea0f";
+            display: inline-block;
+            font-size:20px;
+            font-family:'icomoon';
+        }
+    }
+    
+    // *** Box content part
+    
+    &_box {
+        @include position(absolute,1,40%,auto,auto,50%);
+        transform: translate(-50%,-50%);
+        width:calc(100% - 60px);
+        background:$light;
+        box-shadow:0px 0px 5rem rgba(0,0,0,.5);
+        border:solid 1px $primary;
+        opacity:0;
+        
+        @include transi();
+        @include radius();
+        
+        @media (min-width:$screen-sm) {
+            width:700px;
+        }
+    }
+    
+    // *** Main content part
+    
+    &_content {
+        
+        width:100%;
+        max-height:80vh;
+        overflow:auto;
+        padding:15px;
+        
+        @media (min-width:$screen-sm) {
+            padding:4rem 20%;
+        }
+        
+        &_buttons {
+            
+            margin-top:30px;
+            text-align:center;
+            @include flex(flex,center,center,column);
+            
+            @media (min-width:$screen-sm) {
+                
+                flex-direction: row;
+                justify-content: center;
+                
+            }
+            
+            .u-button + .u-button {
+                
+                margin-top:10px;
+                
+                @media (min-width:$screen-sm) {
+                    
+                    margin-top:0;
+                    margin-left:30px;
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+    // *** Modal Header
+    
+    &_header {
+        
+        padding-bottom:10px;
+        margin-bottom:10px;
+        border-bottom:solid 1px $secondary;
+        
+        @media (min-width:$screen-sm) {
+            padding-bottom:30px;
+            margin-bottom: 30px;
+        }
+        
+        .u-title_small {
+            justify-content: center;
+        }
+        
+    }
+    
+    // *** Iframe (youtube vidéo) part
+    
+    &__iframe
+    {
+        @include position(absolute,1,0,0,0,0);
+        width:100%!important;
+        height:100%!important;
+    }
+    
+    // *** Opening effects
+    
+    &.active {
+        opacity:1;
+        transition-delay:0s;
+        z-index:100000;
+        
+        .u-modal_box {
+            top:50%;
+            opacity:1;
+            transition:all .5s ease .75s;
+        }
+    }
+}

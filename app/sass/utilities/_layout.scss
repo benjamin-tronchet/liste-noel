@@ -1,0 +1,29 @@
+// ***** Import Bootstrap
+
+@import 'utilities/_bootstrap';
+@import 'utilities/_bootstrap_bp_1590';
+
+// ***** Hack paddings Bootstrap (mobile)
+
+.container {
+    
+    @include position(relative,5);
+    
+    @media (min-width:$screen-sm) {
+        
+        width:85vw;
+        
+    }
+    
+}
+
+.container, .container-fluid {
+    
+    @media(max-width:$screen-sm) {
+        
+        padding-left:30px;
+        padding-right:30px;
+        
+    }
+    
+}

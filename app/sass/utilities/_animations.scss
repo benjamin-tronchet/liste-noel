@@ -1,0 +1,71 @@
+// ***** Animations
+
+@keyframes left-right {
+    from {left:0;}
+    25% {left:-5px;}
+    75% {left:5px;}
+    to {left:0;}
+}
+@keyframes bounce {
+    25% {transform:scale(1.25);}
+    50% {transform:scale(0.7);}
+    75% {transform:scale(1.1);}
+    to {transform:scale(1);}
+}
+
+// ***** Premier chargement du site + animations entre les pages
+
+.u-transition {
+    
+    @include position(fixed,99,60px,0,0,0);
+    background:$dark;
+    width:100%;
+    margin:auto;
+    opacity:0;
+    transition:all .75s ease-out;
+    
+    @media (min-width:$screen-md) {
+        top:8rem;
+    }
+    
+    &.under {
+        z-index:-1;
+    }
+    
+    // ***** Premier chargement du site
+    
+    &.first {
+        
+        opacity:1;
+        
+        &.anim {
+            &.remove {
+                transition:all .75s ease-in .5s;
+                opacity:0;
+            }
+        }
+    }
+    
+    // ***** Animations entre les pages 
+    
+    &.active {
+        
+        opacity:1;
+        
+        &.remove {
+            transition:all .75s ease-in .5s;
+            opacity:0;
+            
+        }
+    }
+}
+
+// ***** Ajout d'une transition sur les éléments apparaissant via la parallax
+
+[data-parallax] {
+    
+    @include transi(.25s,ease-out);
+    
+}
+
+

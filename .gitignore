@@ -1,0 +1,4 @@
+node_modules
+prod
+app/css
+.DS_Store

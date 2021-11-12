@@ -1,0 +1,137 @@
+.u-title {
+    
+    // ***** Big Title
+    
+    &_big {
+        
+        @extend %font-cursive;
+        @include fluid-text(50px,120px);
+        color:$light;
+        line-height: 1;
+        display:inline-block;
+        position:relative;
+        text-align: left;
+        
+        &:before {
+            
+            content:attr(text);
+            width:100%;
+            height:100%;
+            @include position(absolute,-1,2px,auto,auto,2px);
+            color:$secondary-dark;
+            
+            @media (min-width:$screen-lg) {
+              
+                top:3px;
+                left:3px;
+                
+            }
+            
+        }
+        
+        &:after {
+            
+            content:attr(text);
+            width:100%;
+            height:100%;
+            @include position(absolute,-2,4px,auto,auto,4px);
+            color:$dark;
+            
+            @media (min-width:$screen-lg) {
+                
+                top:6px;
+                left:6px;
+                
+            }
+        }
+        
+        &--alt {
+            
+            @extend .u-title_big;
+            @include fluid-text(40px,90px);
+            color:$secondary;
+            
+             &:before {
+            
+                content:attr(text);
+                width:100%;
+                height:100%;
+                @include position(absolute,-1,1px,auto,auto,1px);
+                color:$dark;
+
+                @media (min-width:$screen-lg) {
+
+                    top:2px;
+                    left:2px;
+
+                }
+
+            }
+            
+            &:after {
+                
+                display:none;
+                
+            }
+        }
+        
+    }
+    
+    // ***** Medium Title
+    
+    &_medium {
+        
+        @extend %font-bold;
+        @include fluid-text(22px,36px);
+        color:$secondary-dark;
+        text-align: left;
+        
+        &+.u-title_big,
+        &+.u-title_big--alt {
+            
+            margin-top:10px;
+            
+        }
+        
+        &+.u-title_small {
+            
+            margin-top:3rem;
+            
+        }
+        
+    }
+    
+    // ***** Small Title
+    
+    &_small {
+        
+        @extend %font-bold;
+        @include fluid-text(18px,24px);
+        @include flex(flex,center,flex-start);
+        line-height: 1.2;
+        position:relative;
+        color:$secondary-dark;
+        text-align: left;
+        
+        &+p {
+            
+            margin-top:3rem;
+            
+        }
+        
+        [class^='icon-'] {
+            
+            @include icon(18px);
+            margin-right:3rem;
+            
+            @media (min-width:$screen-sm) {
+                @include icon(20px);
+            }
+            
+            @media (min-width:$screen-lg) {
+                @include icon(24px);
+            }
+        }
+        
+    }
+}

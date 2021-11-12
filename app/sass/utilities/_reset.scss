@@ -1,0 +1,157 @@
+// ***** Reset CSS + Propriétés de base
+
+
+* {
+    
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    outline: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-variant-ligatures: common-ligatures;
+    -webkit-font-variant-ligatures: common-ligatures;
+    
+}
+
+// ***** Propriétés CSS de base
+
+html {
+    
+    font-size:5.2px;
+    font-family:$font;
+    color:$dark;
+    width:100%;
+    min-height:100%;
+    overflow-x:hidden;
+    font-kerning:none;
+    
+    @media (min-width: $screen-sm) {
+        
+        font-size:6.1px;
+        
+    }
+    
+    @media (min-width: $screen-md) {
+        
+        font-size:7.2px;
+        
+    }
+    
+    @media (min-width: $screen-lg) {
+        
+        font-size:8.5px;
+        
+    }
+    
+    @media (min-width: $screen-xl) {
+        
+        font-size:10px;
+        
+    }
+}
+
+body {
+    
+    min-height:100%;
+    width:100%;
+    position:relative;
+    
+}
+
+#wrapper {
+    
+    max-width:100vw;
+    
+    @media (min-width:$screen-sm) {
+        padding-bottom:12rem;
+    }
+}
+
+button,
+input,
+textarea {
+    
+    border: none;
+    background: none;
+    
+}
+
+a,
+button {
+    
+    @include transi(.35s);
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    
+}
+
+a img {
+    
+    border: 0;
+    
+}
+
+a:hover,
+button:hover {
+    
+    text-decoration: none;
+    
+}
+
+img,
+svg {
+    
+    vertical-align: middle;
+    border: none;
+    
+}
+
+b, strong {
+    
+    @extend %font-bold;
+    
+}
+
+ul, li {
+    
+    list-style: none;
+    list-style-type: none;
+
+}
+
+div,
+p {
+    
+    font-size: 14px;
+    font-family: $font;
+    text-align: left;
+    color: $primary;
+    line-height:1.4;
+    margin:0;
+    
+    @media(min-width:$screen-lg) {
+        
+        font-size:16px;
+    
+    }
+}
+
+textarea {
+    
+    overflow: auto;
+    resize: none;
+    
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    
+    margin:0;
+    
+}

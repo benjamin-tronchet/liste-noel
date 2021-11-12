@@ -1,0 +1,34 @@
+// ***** Import des utilitaires de base
+
+@import 'utilities/_variables';
+@import 'utilities/_mixins';
+@import 'utilities/_layout';
+@import 'utilities/_fonts';
+@import 'utilities/_reset';
+
+// ***** Imports Utilities
+
+@import 'utilities/_animations';
+@import 'utilities/_buttons';
+@import 'utilities/_modal';
+@import 'utilities/_titles';
+
+// ***** Imports Partials
+
+@import 'partials/_header';
+@import 'partials/_nav';
+
+// ***** Imports Components
+
+@import 'components/_formulaire';
+@import 'components/_santa';
+
+// ***** Imports Utilities Reset
+@import 'utilities/_colors';
+@import 'utilities/_text';
+
+// Pages
+@import 'pages/_identification';
+@import 'pages/_dashboard';
+@import 'pages/_gifts';
+@import 'pages/_list';

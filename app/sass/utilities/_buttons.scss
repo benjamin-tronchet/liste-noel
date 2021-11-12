@@ -1,0 +1,70 @@
+.u-button {
+    
+    @extend %font-bold;
+    @include flex(inline-flex,center,center);
+    font-size:14px;
+    line-height:1;
+    min-width:120px;
+    height:40px;
+    padding:0 15px;
+    color:$light;
+    border:solid 2px;
+    background:$secondary-dark;
+    border-radius:10px;
+    text-align:center;
+    text-transform: uppercase;
+    
+    @media (min-width:$screen-lg) {
+        height:50px;
+        font-size:16px;
+        min-width:160px;
+        padding:0 20px;
+    }
+    
+    &:hover {
+        
+        background:$light;
+        color:$secondary-dark;
+        
+    }
+    
+    [class^='icon'] {
+        
+        @include icon(16px);
+        margin-right:10px;
+        
+    }
+    
+    &--secondary-dark {
+        
+        @extend .u-button;
+        background:$secondary-dark;
+        color:$light;
+        border:solid 2px transparent;
+        
+        &:hover {
+            
+            background:$secondary;
+            color:$light;
+            border-color:$secondary-dark;
+            
+        }
+        
+    }
+    
+    &--primary {
+        
+        @extend .u-button;
+        background:$primary;
+        color:$light;
+        border:solid 2px transparent;
+        
+        &:hover {
+            
+            background:$dark;
+            color:$light;
+            
+        }
+        
+    }
+}

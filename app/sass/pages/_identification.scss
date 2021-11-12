@@ -1,0 +1,58 @@
+.identification {
+    
+    background:url('../img/background_login.jpg') no-repeat center center / cover;
+    
+    .p-header {
+        
+        border:none;
+        
+    }
+    
+    &_form {
+        
+        .c-form {
+            
+            &_field {
+                    
+                &:after {
+                    color:$light;
+                }
+                
+                &_label {
+                    
+                    color:$light;
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+    .c-santa {
+        
+        &_caption {
+            
+            background:$light;
+            color:$secondary;
+            
+            svg {
+                path {
+                    
+                    fill:$light;
+                    
+                }
+            }
+            
+        }
+        
+        &_close {
+            
+            color:$light;
+            
+        }
+        
+    }
+    
+}

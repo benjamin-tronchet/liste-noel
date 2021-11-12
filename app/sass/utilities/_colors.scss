@@ -1,0 +1,63 @@
+.u-color {
+    
+    &_primary {
+        
+        color:$primary;
+        
+        &--bg {
+            
+            background:$primary;
+            
+        }
+        
+    }
+    
+    &_secondary {
+        
+        color:$secondary;
+        
+        &--bg {
+            
+            background:$secondary;
+            
+        }
+        
+    }
+    
+    &_secondary-dark {
+        
+        color:$secondary-dark;
+        
+        &--bg {
+            
+            background:$secondary-dark;
+            
+        }
+        
+    }
+    
+    &_dark {
+        
+        color:$dark;
+        
+        &--bg {
+            
+            background:$dark;
+            
+        }
+        
+    }
+    
+    &_light {
+        
+        color:$light;
+        
+        &--bg {
+            
+            background:$light;
+            
+        }
+        
+    }
+    
+}

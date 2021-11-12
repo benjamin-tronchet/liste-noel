@@ -1,0 +1,57 @@
+// ***** Utilitaires Texte 
+
+.u-text {
+    
+    &_center {
+        text-align: center;
+    }
+    
+    &_left {
+        text-align: left;
+    }
+    
+    &_right {
+        text-align: right;
+    }
+    
+    &_justify {
+        text-align: justify;
+    }
+    
+    &_small {
+        font-size: 75%;
+    }
+    
+    &_big {
+        font-size: 125%;
+    }
+    
+    &_bigger {
+        font-size: 150%;
+    }
+    
+    &_vertical {
+        
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        transform: rotate(-90deg);
+        white-space: nowrap;
+
+        &:after {
+            content: '';
+            display: block;
+            width: 100%;
+            padding-bottom: 100%;
+        }
+
+        &--right {
+
+            @extend .u-text_vertical;
+            transform: rotate(90deg);
+
+        }
+    }
+}

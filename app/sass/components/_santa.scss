@@ -1,0 +1,129 @@
+.c-santa {
+    
+    @include position(fixed,10,auto,-5%,0);
+    width:40%;
+    
+    @media (min-width:$screen-sm) {
+        
+        width:20vw;
+        right:-2vw;
+        
+    }
+    
+    @media (min-width:$screen-md) {
+        
+        width:13vw;
+        
+    }
+    
+    &_img {
+        
+        width:100%;
+        height:auto;
+        
+    }
+    
+    &_caption {
+        
+        @include position(absolute,1,0,auto,auto,0);
+        @extend %font-cursive;
+        @include fluid-text(14px,20px);
+        @include radius;
+        @include transi(.25s);
+        padding:10px;
+        background:$secondary;
+        color:$light;
+        line-height:1.2;
+        transform:translate(-90%,-100%);
+        max-height:300px;
+        text-align:center;
+        
+        &_text {
+            display: block;
+            max-height:300px;
+            overflow:hidden;
+            @include transi(.25s);
+            
+        }
+        
+        @media (min-width:$screen-lg) {
+            padding:15px;
+        }
+        
+        svg {
+        
+            width:20%;
+            @include position(absolute,1,99%,10%);
+            @include transi(.25s);
+
+            path {
+
+                fill:$secondary;
+
+            }
+        } 
+    }
+    
+    &_close {
+        
+        @include position(absolute,1,0,0);
+        @include icon(1.6rem);
+        transform: translate(0%,-200%);
+        color:$secondary;
+        
+        &:after {
+            
+            content: '';
+            @include position(absolute,1,50%,50%);
+            transform: translate(50%,-50%);
+            display:block;
+            width:260%;
+            height:260%;
+            margin:auto;
+            border:solid 2px;
+            border-radius:50%;
+            
+        }
+        
+        .qmark {
+            
+            display:none;
+            
+        }
+        
+    }
+    
+    &.close {
+        
+        .c-santa {
+            
+            &_caption {
+                padding-top:0;
+                padding-bottom:0;
+                max-height:0;
+                
+                &_text {
+                    opacity:0;
+                    max-height:0;
+                }
+                
+                svg {
+                    max-height:0;
+                }
+            }
+            
+            &_close {
+                
+                .icon-close {
+                    display:none;
+                }
+
+                .qmark {
+                    display:inline-block;
+                }
+                
+            }
+            
+        }
+    }
+}

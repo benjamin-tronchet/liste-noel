@@ -1,0 +1,104 @@
+.gifts {
+    
+    .page-background {
+        display:none;
+        
+        @media (min-width:$screen-sm) {
+            display:block;
+            @include position(fixed,10,0,auto,0,0%);
+            width:15%;
+            background:url('../img/background_dashboard.jpg') no-repeat left center;
+            background-size:auto 100%;
+        }
+    }
+    
+    &_list {
+        
+        margin-top:5rem;
+        
+        &_item {
+            
+            padding-bottom:10px;
+            border-bottom:solid 1px;
+            
+            @media (min-width:$screen-sm) {
+                
+                @include flex(flex,center);
+                
+            }
+            
+            &+& {
+                
+                margin-top:10px;
+                
+            }
+            
+            &:last-child {
+                
+                border-bottom:none;
+                
+            }
+            
+            &_text {
+                
+                @include fluid-text(16px,20px);
+                text-transform: uppercase;
+                margin-bottom:10px;
+                
+                @media (min-width:$screen-sm) {
+                    
+                    width:70%;
+                    margin-bottom: 0;
+                    
+                }
+                
+                @media (min-width:$screen-lg) {
+                    
+                    width:calc(100% - 340px);
+                    
+                }
+                
+            }
+            
+            &_buttons {
+                
+                @include flex(flex,center,flex-end);
+                width:100%;
+                
+                a+a {
+                    margin-left:10px;
+                    
+                    @media (min-width:$screen-sm) {
+                        margin-top:10px;
+                        margin-left:0;
+                    }
+                    
+                    @media (min-width:$screen-lg) {
+                        margin:0;
+                    }
+                }
+                
+                @media (min-width:$screen-sm) {
+                    
+                    width:30%;
+                    
+                }
+                
+                @media (min-width:$screen-lg) {
+                    
+                    width:340px;
+                    justify-content: space-between;
+                    
+                }
+                
+            }
+        }
+        
+    }
+    
+    &_form {
+        
+        padding-bottom:50px;
+        
+    }
+}
