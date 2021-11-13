@@ -23,7 +23,7 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-xl-8 col-xl-offset-2">
                     <section class="gifts_form">
-                        <form action="gifts/<?=$action?>" method="post" class="c-form" onsubmit="return form_checker(event)" enctype="multipart/form-data">
+                        <form action="<?=SITE_MAIN_BASE.'gifts/'.$action?>" method="post" class="c-form" onsubmit="return form_checker(event)" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-0 c-form_col">
                                     <div class="c-form_field">

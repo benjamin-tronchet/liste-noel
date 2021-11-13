@@ -504,8 +504,8 @@ class FormTools
         switch($format) 
         {
             case 'image_normal':
-                $width = 800;
-                $height = 800;
+                $width = 600;
+                $height = 600;
                 $folder = "images";
                 $crop = false;
             break;

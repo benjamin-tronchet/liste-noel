@@ -12,7 +12,7 @@ function form_checker(event) {
 
     let form_inputs = formulaire.querySelectorAll('input,textarea,select'), i;
 
-    for(i = 0; i< form_inputs.length; ++i) {
+    for(i = 0; i < form_inputs.length; ++i) {
         let element = form_inputs[i],
             name = element.getAttribute('name');
             
@@ -71,7 +71,7 @@ function form_checker(event) {
 
     if(formState) 
     {
-        return true;
+        return false;
     }
     else
     {
@@ -84,7 +84,7 @@ function form_checker(event) {
 function checkRequired(element) {
     let value = element.value,
         message = element.getAttribute('data-required'),
-        parent = element.closest('.c-form_field');
+        parent = element.closest('.c-form_field,.c-form_field--price');
 
     if (value == "" || value == undefined) {
         parent.classList.add('error');

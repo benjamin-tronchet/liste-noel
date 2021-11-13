@@ -21,7 +21,7 @@
                 On est OK là dessus ?
             </strong>
         </p>
-        <form action="gifts/block/" class="u-modal_content_buttons" method="post">
+        <form action="<?=SITE_MAIN_BASE?>gifts/block/" class="u-modal_content_buttons" method="post">
             <input type="hidden" name="id_user" value="<?=$_POST['id_user']?>">
             <input type="hidden" name="id_gift" value="<?=$_POST['id']?>">
             <button class="u-button--primary" data-close-modal>

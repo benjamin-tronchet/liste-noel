@@ -135,7 +135,6 @@ gulp.task('build', function () {
                 appPath + '**/*.{html,php}'
             ])
             .pipe(useref())
-            .pipe(gulpif('*.js'))
             .pipe(gulpif('*.css', gcmq()))
             .pipe(gulpif('*.css', cleanCSS()))
             .pipe(gulp.dest('prod'));

@@ -15,7 +15,7 @@ function identification(Tools $tools, UserManager $UserManager)
     } 
     else
     {
-        $santa_text = "Connectes-toi, ou crée un compte si ce n'est pas encore fait !";
+        $santa_text = "Connecte-toi, ou crée un compte si ce n'est pas encore fait !";
         $users_list = $UserManager->lists();
         include 'views/LoginView.php';
     }

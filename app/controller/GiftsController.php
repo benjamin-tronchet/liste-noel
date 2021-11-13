@@ -38,7 +38,7 @@ function create_gift()
     // Définition des actions et variables utiles
     $action = "add/";
     $page_title = "Ajouter un cadeau";
-    $santa_text = "Astuce :<br/>Les champs indiqués en rouge sont obligatoires, penses à les remplir !";
+    $santa_text = "Astuce :<br/>Les champs indiqués en rouge sont obligatoires, pense à les remplir !";
     
     // Inclusion de la vue
     include 'views/GiftsView_edit.php';
@@ -65,7 +65,7 @@ function edit_gift(GiftManager $manager, Tools $tools)
             // Définition des actions et variables utiles
             $action = "update/".$id_gift.'/';
             $page_title = "Modifier un cadeau";
-            $santa_text = "Astuce :<br/>Les champs indiqués en rouge sont obligatoires, penses à les remplir !";
+            $santa_text = "Astuce :<br/>Les champs indiqués en rouge sont obligatoires, pense à les remplir !";
             $_SESSION['edit_gift'] = $id_gift;
 
             // Inclusion de la vue
@@ -236,7 +236,18 @@ function view_list(GiftManager $manager, UserManager $user_manager, Tools $tools
     {
         $id_user = $_GET['id'];
         
+        if(!$user_manager->exists($id_user))
+        {
+            $tools->redirect('dashboard/');
+        }
+        
         $user = $user_manager->get($id_user);
+        $user_list = $manager->lists($id_user);
+        $users_list = $user_manager->lists();
+        $santa_text = $user->username()." a été très sage cette année, alors il est temps d'aligner les billets pour lui faire plaisir !";
+        
+        ksort($user_list);
+        ksort($users_list);
         
         if($id_user === $_SESSION['user']->id_user())
         {
@@ -246,13 +257,6 @@ function view_list(GiftManager $manager, UserManager $user_manager, Tools $tools
             include 'views/ListView_error.php';
             die();
         }
-        
-        $user_list = $manager->lists($id_user);
-        $users_list = $user_manager->lists();
-        
-        ksort($user_list);
-        ksort($users_list);
-        $santa_text = $user->username()." a été très sage cette année, alors il est temps d'aligner les billets pour lui faire plaisir !";
         
         // Inclusion de la vue
         include 'views/ListView.php';

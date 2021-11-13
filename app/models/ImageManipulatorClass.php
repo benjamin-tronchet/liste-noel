@@ -257,7 +257,7 @@ class ImageManipulator
                     break;
                 case IMAGETYPE_JPEG :
                 default             :
-                    if (!imagejpeg($this->image, $fileName, 65)) {
+                    if (!imagejpeg($this->image, $fileName, 60)) {
                         throw new RuntimeException;
                     }
             }
