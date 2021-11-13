@@ -71,7 +71,7 @@ function form_checker(event) {
 
     if(formState) 
     {
-        return false;
+        return true;
     }
     else
     {
