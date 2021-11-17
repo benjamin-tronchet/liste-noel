@@ -10,16 +10,6 @@
             "img": null,
             "booked": "0"
         },
-        "bd-the-walking-dead": {
-            "id_gift": "bd-the-walking-dead",
-            "name": "BD The Walking Dead",
-            "price": "3 \u00e0 10",
-            "desc": "Je n'en ai aucun, donc j'aimerai commencer la collection \u00e0 partir du tome 1\r\nSur le lien pour acheter en ligne, il y a des bouquins d'occasion qui ne sont pas tr\u00e8s chers, donc il est possible d'en commander plusieurs.",
-            "store": "Librairies, ou site en ligne (voir lien)",
-            "url_shop": "https:\/\/www.momox-shop.fr\/robert-kirkman-walking-dead-tome-1-passe-decompose-taschenbuch-M02756009121.html",
-            "img": "uploads\/images\/walking-dead_JefTj4.jpg",
-            "booked": "0"
-        },
         "bonnet-a-pompon": {
             "id_gift": "bonnet-a-pompon",
             "name": "Bonnet \u00e0 pompon",
@@ -99,6 +89,16 @@
             "url_shop": "https:\/\/www.avenuedelabrique.com\/lego-speed-champions\/76900-koenigsegg-jesko\/p7262",
             "img": "uploads\/images\/91dxp3wap8s_ac_sl1500__QK559C.jpg",
             "booked": "0"
+        },
+        "bd-the-walking-dead": {
+            "id_gift": "bd-the-walking-dead",
+            "name": "BD The Walking Dead",
+            "price": "3 \u00e0 10",
+            "desc": "Je n'en ai aucun, donc j'aimerai commencer la collection \u00e0 partir du tome 1\r\nSur le lien pour acheter en ligne, il y a des bouquins d'occasion qui ne sont pas tr\u00e8s chers, donc il est possible d'en commander plusieurs.",
+            "store": "Librairies, ou site en ligne (voir lien)",
+            "url_shop": "https:\/\/www.momox-shop.fr\/robert-kirkman-walking-dead-tome-1-passe-decompose-taschenbuch-M02756009121.html",
+            "img": "uploads\/images\/walking-dead_JefTj4.jpg",
+            "booked": "regis"
         }
     }
 }

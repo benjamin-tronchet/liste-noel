@@ -3,5 +3,15 @@
         "id_user": "benjamin",
         "username": "Benjamin",
         "password": "$2y$10$D\/giiD7gT2WAp8N8hQxSN.dCT\/UiXMIOkU.A.aX1swgu9bty5HFGa"
+    },
+    "regis": {
+        "id_user": "regis",
+        "username": "R\u00e9gis",
+        "password": "$2y$10$BliDWpNCFTZiKMpiZ8aS4edP0Z\/XzgqsVDMiy\/EWhoOF1vs35XHHe"
+    },
+    "lambda": {
+        "id_user": "lambda",
+        "username": "Lambda",
+        "password": "$2y$10$UJXF\/.TXiQjZrP\/9GSHrQ.iRVLmFMUWpPbKNJI.HQkhBTT27bk1\/K"
     }
 }

@@ -1,3 +1,6 @@
+<?php
+    include realpath(__DIR__).'/../inc_config.php';
+?>
 <div class="u-modal_box">
     <button class="u-modal_close" data-close-modal></button>
     <div class="u-modal_content">
