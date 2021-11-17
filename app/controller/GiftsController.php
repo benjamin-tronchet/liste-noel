@@ -12,7 +12,6 @@ $UserManager = new UserManager(DB_USERS);
 function lists(GiftManager $manager) 
 {
     $gifts_list = $manager->lists($_SESSION['user']->id_user());
-    ksort($gifts_list);
     
     $santa_text = "Astuce :<br/>Tu peux ajouter une nouvelle idée avec le bouton en haut à droite";
     include 'views/GiftsView_list.php';
@@ -245,9 +244,6 @@ function view_list(GiftManager $manager, UserManager $user_manager, Tools $tools
         $user_list = $manager->lists($id_user);
         $users_list = $user_manager->lists();
         $santa_text = $user->username()." a été très sage cette année, alors il est temps d'aligner les billets pour lui faire plaisir !";
-        
-        ksort($user_list);
-        ksort($users_list);
         
         if($id_user === $_SESSION['user']->id_user())
         {

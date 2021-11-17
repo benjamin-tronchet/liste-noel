@@ -93,6 +93,8 @@ class UserManager extends Manager
             $users_array[$current_user->id_user()] = $current_user;
         }
         
+        ksort($users_array);
+        
         return $users_array;
     }
     

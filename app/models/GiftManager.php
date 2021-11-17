@@ -149,6 +149,8 @@ class GiftManager extends Manager
             }
         }
         
+        ksort($gifts_array);
+        
         return $gifts_array;
     }
 }
