@@ -44,7 +44,8 @@
                                 <?php
                                     foreach($users_list as $id_user => $user)
                                     {
-                                        if($id_user !== $_SESSION['user']->id_user())
+                                        $user_list = $GiftManager->lists($id_user);
+                                        if($id_user !== $_SESSION['user']->id_user() && !empty($user_list))
                                         {
                                 ?>
                                         <li data-value="<?=$user->id_user()?>"><?=$user->username()?></li>

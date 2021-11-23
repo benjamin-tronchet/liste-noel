@@ -55,6 +55,7 @@ switch($page_name)
 
     case 'dashboard':
         include 'controller/UsersController.php';
+        $GiftManager = new GiftManager(DB_GIFTS);
         $users_list = $UserManager->lists();
         $santa_text = "Que souhaites-tu faire, mon enfant ?";
         $user = $_SESSION['user'];
