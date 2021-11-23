@@ -60,7 +60,10 @@
                                 <?php
                                     foreach($users_list as $id_user => $user)
                                     {
-                                        $user_list = $GiftManager->lists($id_user);
+                                        if(!isset($user_list)) {
+                                            $user_list = $GiftManager->lists($id_user);
+                                        }
+                                        
                                         if($id_user !== $_SESSION['user']->id_user() && !empty($user_list))
                                         {
                                 ?>
