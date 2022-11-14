@@ -248,7 +248,7 @@ function view_list(GiftManager $manager, UserManager $user_manager, Tools $tools
         if($id_user === $_SESSION['user']->id_user())
         {
             // Inclusion de la vue
-            $days_before_christmas = intval((strtotime("25 December 2021") - time()) / 3600 / 24);
+            $days_before_christmas = intval((strtotime("25 December 2022") - time()) / 3600 / 24);
             $santa_text = "Petit malin ! Tu as cru pouvoir me duper ?";
             include 'views/ListView_error.php';
             die();

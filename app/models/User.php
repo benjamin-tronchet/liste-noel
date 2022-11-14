@@ -6,8 +6,12 @@ class User implements JsonSerializable
     // ========================================================
     
     private $_id_user;
+    private $_email;
     private $_username;
     private $_password;
+    private $_token;
+    private $_img;
+    private $_last_visit;
     
     // ========================================================
     // Création du constructeur
@@ -42,6 +46,10 @@ class User implements JsonSerializable
     {
         return $this->_id_user;
     }
+    public function email()
+    {
+        return $this->_email;
+    }
     public function username()
     {
         return $this->_username;
@@ -49,6 +57,18 @@ class User implements JsonSerializable
     public function password()
     {
         return $this->_password;
+    }
+    public function token()
+    {
+        return $this->_token;
+    }
+    public function img()
+    {
+        return $this->_img;
+    }
+    public function last_visit()
+    {
+        return $this->_last_visit;
     }
     
     // ========================================================
@@ -60,6 +80,13 @@ class User implements JsonSerializable
         if (is_string($id_user))
         {
             $this->_id_user = $id_user;
+        }
+    }
+    public function setEmail($email)
+    {
+        if (is_string($email) && filter_var($email,FILTER_SANITIZE_EMAIL))
+        {
+            $this->_email = $email;
         }
     }
     public function setUsername($username)
@@ -76,6 +103,29 @@ class User implements JsonSerializable
             $this->_password = $password;
         }
     }
+    public function setToken($token)
+    {
+        if (is_string($token) && strlen($token) == 10)
+        {
+            $this->_token = $token;
+        }
+    }
+    public function setImg($img)
+    {
+        if (is_string($img))
+        {
+            $this->_img = $img;
+        }
+    }
+    public function setLast_visit($last_visit)
+    {
+        $date = date('d/m/Y',$last_visit);
+        $date = date_parse($date_format);
+        if (is_string($last_visit) && checkdate($date['month'], $date['day'], $date['year']))
+        {
+            $this->_last_visite = $last_visit;
+        }
+    }
     
     // ========================================================
     // Fonctions utilitaires
@@ -83,6 +133,18 @@ class User implements JsonSerializable
     
     public function hash() {
         $this->setPassword(password_hash($this->_password,PASSWORD_DEFAULT));
+    }
+    
+    public function generate_token() {
+        $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $max = mb_strlen($keyspace, '8bit') - 1;
+        
+        for ($i = 0; $i < 10; ++$i) {
+            $pieces []= $keyspace[random_int(0, $max)];
+        }
+        
+        $token = implode('', $pieces);
+        $this->setToken($token);
     }
     
     public function jsonSerialize() {

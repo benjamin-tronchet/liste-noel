@@ -35,6 +35,10 @@
     }
 ?>
     </div>
+    <div class="u-panel">
+        
+    </div>
+    <div class="u-panel_overlay"></div>
     
     <!-- Scripts -->
     <!-- build:js(app) js/script.min.js -->
