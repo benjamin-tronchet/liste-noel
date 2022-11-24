@@ -3,7 +3,7 @@
     .page-background {
         display:none;
         
-        @media (min-width:$screen-sm) {
+        @media (min-width:$screen-md) {
             display:block;
             @include position(fixed,10,0,auto,0,0%);
             width:15%;
@@ -14,83 +14,125 @@
     
     &_list {
         
-        margin-top:5rem;
+        margin-top:4rem;
+        @include flex(flex,center,space-between);
+        
+        &_add {
+            text-align:center;
+            width:100%;
+        }
+        
+        &_title {
+            margin:4rem 0;
+            text-align:center;
+            border-top:solid 1px;
+            padding-top:4rem;
+            width:100%;
+        }
         
         &_item {
-            
-            padding-bottom:10px;
-            border-bottom:solid 1px;
-            
-            @media (min-width:$screen-sm) {
-                
-                @include flex(flex,center);
-                
-            }
-            
-            &+& {
-                
-                margin-top:10px;
-                
-            }
+            @include flex(flex,center,space-between);
+            margin-bottom:30px;
+            padding-bottom:30px;
+            border-bottom:solid 1px $secondary;
+            width:100%;
             
             &:last-child {
+                border-bottom:0;
+            }
+            
+            @media (min-width:$screen-md) {
+                width:calc(50% - 15px);
+                border-radius:3rem;
+                padding:3rem;
+                border:solid 1px $secondary;
                 
-                border-bottom:none;
+                &:last-child {
+                    border:solid 1px $secondary;
+                }
+            }
+            
+            &_img {
+                width:30%;
                 
+                @media (min-width:$screen-sm) {
+                    width:20%;
+                }
+                
+                @media (min-width:$screen-md) {
+                    width:30%;
+                }
+                
+                @media (min-width:$screen-lg) {
+                    width:25%;
+                }
+                
+                &_wrapper {
+                    padding-bottom:calc(100% - 4px);
+                    position:relative;
+                    width:100%;
+                    overflow:hidden;
+                    border-radius:50%;
+                    border:solid 2px $primary;
+                    
+                    img {
+                        @include position(absolute,1);
+                        min-width:100%;
+                        min-height:100%;
+                        object-fit:cover;
+                    }
+                }
+                
+                img {
+                    width:100%;
+                    height:100%;
+                    object-fit: cover;
+                }
             }
             
             &_text {
-                
-                @include fluid-text(16px,20px);
-                text-transform: uppercase;
-                margin-bottom:10px;
+                width:65%;
+                text-align:right;
                 
                 @media (min-width:$screen-sm) {
-                    
-                    width:70%;
-                    margin-bottom: 0;
-                    
+                    width:75%;
+                }
+                
+                @media (min-width:$screen-md) {
+                    width:65%;
                 }
                 
                 @media (min-width:$screen-lg) {
-                    
-                    width:calc(100% - 340px);
-                    
+                    width:70%;
                 }
-                
+            }
+            
+            &_title {
+                display:inline-block;
+                width:100%;
+                font-size:125%;
+                color:$dark;
+                margin-bottom: 10px;
             }
             
             &_buttons {
-                
                 @include flex(flex,center,flex-end);
                 width:100%;
-                
-                a+a {
-                    margin-left:10px;
+                margin-top:3rem;
                     
-                    @media (min-width:$screen-sm) {
-                        margin-top:10px;
-                        margin-left:0;
-                    }
-                    
-                    @media (min-width:$screen-lg) {
-                        margin:0;
-                    }
+                button + button {
+                    margin-left:1rem;
                 }
                 
                 @media (min-width:$screen-sm) {
-                    
-                    width:30%;
-                    
+                    margin-top: 0;
                 }
                 
-                @media (min-width:$screen-lg) {
-                    
-                    width:340px;
-                    justify-content: space-between;
-                    
+                @media (min-width:$screen-md) {
+                    margin-top:30px;
+                    padding-top:15px;
+                    border-top:solid 1px rgba($dark,.2);
                 }
-                
             }
         }
         
@@ -100,5 +142,160 @@
         
         padding-bottom:50px;
         
+    }
+    
+    &_card {
+        
+        padding-bottom:30px;
+        border-bottom:solid 1px $secondary-dark;
+        @include flex(flex);
+        position:relative;
+        
+        &+& {
+            margin-top:30px;
+        }
+        
+        &:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        @media (min-width:$screen-md) {
+            justify-content: space-between;
+        }
+        
+        &.is-booked {
+            border-bottom:none;
+        }
+        
+        &_img {
+            
+            width:100%;
+            padding-bottom:50%;
+            @include radius;
+            box-shadow:0px 0px 8px rgba($secondary-dark,.35);
+            position:relative;
+            overflow:hidden;
+            margin-bottom: 20px;
+            
+            img {
+                @include position(absolute,1,0,0,auto,0);
+                margin:auto;
+                height:100%;
+                object-fit: cover;
+                
+                @media (min-width:$screen-md) {
+                    width:100%;
+                    height:100%;
+                }
+            }
+            
+            @media (min-width:$screen-md) {
+                
+                width:27%;
+                padding-bottom:27%;
+                margin-bottom:0;
+                
+            }
+            
+            &_overlay {
+                
+                @include position(absolute,2,0,0,0,0);
+                @include flex(flex,center,center);
+                background:rgba($secondary,.8);
+                color:$light;
+                padding:0 20px;
+                @extend %font-bold;
+                
+                &_text {
+                    width:100%;
+                    @include fluid-text(18px,24px);
+                    line-height: 1.2;
+                    color:$light;
+                    text-align:center;
+                }
+                
+                
+                [class*='icon'] {
+                    @include icon(6rem);
+                    transform: translateX(20%);
+                    margin-bottom:15px;
+                }
+                
+            }
+            
+        }
+        
+        &_text {
+            
+            @media (min-width:$screen-md) {
+                
+                width:65%;
+                
+            }
+            
+            .u-text_big {
+                margin:10px 0;
+            }
+            
+        }
+        
+        &_buttons {
+            
+            @include flex(flex,flex-start,center,column);
+            margin-top: 20px;
+            
+            button + a,
+            button + button {
+                margin-top:10px;
+            }
+            
+            @media (min-width:$screen-sm) {
+                
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+            
+                button + a,
+                button + button {
+                    margin-top:0px;
+                    margin-left: 3rem;
+                }
+                
+            }
+            
+        }
+        
+        &_overlay {
+            
+            @include position(absolute,1,0,0,0,0);
+            background:rgba($secondary,.9);
+            backdrop-filter: blur(2px);
+            @include flex(flex,center,center,column);
+            width:100%;
+            padding:0 20px;
+            text-align: center;
+            @include radius();
+            
+            @media (min-width:$screen-md) {
+                flex-direction:row;
+                align-items:center;
+            }
+            
+            [class*='icon'] {
+                @include icon(10rem);
+                transform: translateX(20%);
+                margin-bottom:15px;
+                
+                @media (min-width:$screen-md) {
+                    margin-right:30px;
+                }
+            }
+            
+            &_text {
+                text-align:center;
+            }
+            
+        }
     }
 }

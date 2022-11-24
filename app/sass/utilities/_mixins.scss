@@ -40,18 +40,12 @@
 
 // ***** Transition
 
-@mixin transi($duration:.5s,$easing:ease,$delay:0s,$property:all,$delay-hover:0s) {
+@mixin transi($duration:.5s,$easing:ease,$delay:0s,$property:all) {
     
     transition-property: $property;
     transition-duration: $duration;
     transition-timing-function: $easing;
     transition-delay: $delay;
-    
-    &:hover {
-        
-        transition-delay: $delay-hover;
-        
-    }
     
 }
 

@@ -1,0 +1,143 @@
+.groups {
+    
+    .page-background {
+        display:none;
+        
+        @media (min-width:$screen-md) {
+            display:block;
+            @include position(fixed,10,0,auto,0,0%);
+            width:15%;
+            background:url('../img/background_dashboard.jpg') no-repeat left center;
+            background-size:auto 100%;
+        }
+    }
+    
+    &_list {
+        
+        margin-top:5rem;
+        @include flex(flex,center,space-between);
+        
+        &_add {
+            text-align:center;
+            width:100%;
+        }
+        
+        &_title {
+            margin:4rem 0;
+            text-align:center;
+            border-top:solid 1px;
+            padding-top:4rem;
+            width:100%;
+        }
+        
+        &_item {
+            @include flex(flex,flex-start,flex-start);
+            margin-bottom:8rem;
+            width:100%;
+            
+            &_head {
+                @include flex(flex,center,space-between);
+                width:100%;
+                padding-bottom:10px;
+                margin-bottom:20px;
+                border-bottom:solid 1px;
+            }
+            
+            &_leave {
+                @include flex(inline-flex,center,flex-start);
+                
+                .icon-cancel {
+                    margin-left:10px;
+                }
+            }
+            
+            &_empty {
+                width:100%;
+            }
+            
+            &_intro {
+                width:100%;
+                margin-bottom:30px;
+            }
+        }
+        
+        &_member {
+            width:calc(50% - 10px);
+            @include flex(flex,center,flex-start);
+            margin-bottom: 15px;
+            position:relative;
+            margin-right:20px;
+            
+            &:nth-of-type(2n+2) {
+                margin-right: 0;
+            }
+            
+            @media (min-width:$screen-sm) {
+                width:calc(33.333% - 10px);
+                margin-right:15px;
+                
+                &:nth-of-type(2n+2) {
+                    margin-right:15px;
+                }
+                &:nth-of-type(3n+3) {
+                    margin-right:0px;
+                }
+            }
+            
+            @media (min-width:$screen-lg) {
+                width:calc(25% - 12px);
+                margin-right:15px;
+                
+                &:nth-of-type(2n+2) {
+                    margin-right:15px;
+                }
+                &:nth-of-type(3n+3) {
+                    margin-right:15px;
+                }
+                &:nth-of-type(4n+4) {
+                    margin-right:0px;
+                }
+            }
+            
+            
+            &_img {
+                width:30%;
+                position:relative;
+                
+                @media (min-width:$screen-sm) {
+                    width:25%;
+                }
+                
+                &_wrapper {
+                    width:100%;
+                    padding-bottom:100%;
+                    position:relative;
+                    overflow:hidden;
+                    
+                    img {
+                        @include position(absolute,1,0,0);
+                        width:100%;
+                        height:100%;
+                        object-fit:cover;
+                        border-radius:50%;
+                    }
+                }
+            }
+            
+            &_title {
+                width:65%;
+                margin-left:5%;
+                @extend %font-bold;
+                color:$dark;
+                
+                @media (min-width:$screen-sm) {
+                    width:70%;
+                }
+            }
+            
+            &_button {
+                margin-top:10px;
+            }
+        }
+    }
+}

@@ -5,61 +5,53 @@
     
     <div class="page-background"></div>
     
+    <?php
+        include 'includes/nav.php';
+    ?>
     <div id="wrapper">
         <div class="container">
             <div class="row">
-                <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
+                <div class="col-xs-12 col-md-10 col-md-offset-1 col-xl-8 col-xl-offset-2">
                     <header class="p-header">
                         <h1 class="u-title_medium u-color_secondary-dark">Bienvenue</h1>
                         <h1 class="u-title_big--alt" text="<?=$user->username()?>"><?=$user->username()?></h1>
                     </header> 
                     <section class="dashboard_content">
                         <h2 class="u-title_small">
-                            Je souhaite gérer ma liste d'idées
+                            Que souhaites-tu faire ?
                         </h2>
-                        <p>
-                            Pour ajouter de nouvelles idées de cadeau, modifier ma liste, rendre un cadeau indisponible...
-                            <br><br>
-                            <a href="gifts/list/" class="u-button--secondary-dark">
-                                <span class="icon-list"></span> Gérer ma liste
-                            </a>
-                        </p>
-                    </section>
-                    <section class="dashboard_content">
-                        <h2 class="u-title_small">
-                            Je souhaite trouver une idée de cadeau
-                        </h2>
-                        <p>
-                            Jeter un oeil aux listes d'envies, et trouver une idée de cadeau qui fera plaisir à coup sûr !
-                        </p>
-                        <form action="<?=SITE_MAIN_BASE.'liste/view/'?>" onsubmit="return form_checker(event)" method="post" class="c-form">
-                            <div class="c-form_field">
-                                <label class="c-form_field_label" data-required>Je veux voir la liste de :</label>
-                                <div class="c-form_dropdown">
-                                    <input type="hidden" value="" data-required="Merci de sélectionner un utilisateur" name="required[id_user]"/>
-                                    <button class="c-form_dropdown_btn" type="button">
-                                       <span class="text">Choisir une personne dans la liste</span> <span class="icon-caret"></span>
-                                    </button>
-                                    <ul class="c-form_dropdown_list">
-                                <?php
-                                    foreach($users_list as $id_user => $user)
-                                    {
-                                        $user_list = $GiftManager->lists($id_user);
-                                        if($id_user !== $_SESSION['user']->id_user() && !empty($user_list))
-                                        {
-                                ?>
-                                        <li data-value="<?=$user->id_user()?>"><?=$user->username()?></li>
-                                <?php
-                                        }
-                                    }
-                                ?>
-                                    </ul>
-                                </div>
+                        <div class="dashboard_card_wrapper">
+                            <div class="dashboard_card">
+                                <p class="dashboard_card_head">
+                                    GÉRER MA LISTE
+                                </p>
+                                <b>Gérer ma liste, ajouter de nouvelles idées de cadeaux</b>
+                                <br><br>
+                                <a href="gifts/list/" class="u-button--secondary-dark dashboard_card_button">
+                                    <span class="icon-list"></span> ma liste
+                                </a>
                             </div>
-                            <div class="c-form_field">
-                                <button class="u-button--secondary-dark"><span class="icon-eye"></span>Voir la liste</button>
+                            <div class="dashboard_card">
+                                <p class="dashboard_card_head">
+                                    TROUVER UNE IDÉE
+                                </p>
+                                <b>Voir les listes des autres utilisateurs pour trouver une idée</b>
+                                <br><br>
+                                <a href="users/" class="u-button--secondary-dark dashboard_card_button">
+                                    <span class="icon-gift"></span> Trouver une idée
+                                </a>
                             </div>
-                        </form>
+                            <div class="dashboard_card">
+                                <p class="dashboard_card_head">
+                                    GÉRER MES GROUPES
+                                </p>
+                                <b>Rejoindre ou quitter un groupe d'utilisateurs</b>
+                                <br><br>
+                                <a href="groups/" class="u-button--secondary-dark dashboard_card_button">
+                                    <span class="icon-groups"></span> Mes groupes
+                                </a>
+                            </div>
+                        </div>
                     </section>
                 </div>
             </div>

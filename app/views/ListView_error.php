@@ -9,7 +9,7 @@
         <div class="p-header_fixed--alt">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-xl-8 col-xl-offset-2">
+                    <div class="col-xs-12 col-md-10 col-md-offset-1 col-xl-8 col-xl-offset-2">
                         <header class="p-header u-text_center">
                             <?php include 'includes/nav.php'; ?>
                             <h1 class="u-title_medium u-text_center">Et alors ?</h1>
@@ -21,7 +21,7 @@
         </div>
         <div class="container">
             <div class="row">
-                <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-xl-8 col-xl-offset-2">
+                <div class="col-xs-12 col-md-10 col-md-offset-1 col-xl-8 col-xl-offset-2">
                     <section class="liste_giftlist">
                         <p class="u-text_big u-text_center">
                             <em>

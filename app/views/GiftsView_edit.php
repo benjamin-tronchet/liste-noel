@@ -9,7 +9,7 @@
         <div class="p-header_fixed">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-xl-8 col-xl-offset-2">
+                    <div class="col-xs-12 col-md-10 col-md-offset-1 col-xl-8 col-xl-offset-2">
                         <header class="p-header u-text_right">
                             <?php include 'includes/nav.php'; ?>
                             <h1 class="u-title_medium"><?=$page_title?></h1>
@@ -21,7 +21,7 @@
         </div>
         <div class="container">
             <div class="row">
-                <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-xl-8 col-xl-offset-2">
+                <div class="col-xs-12 col-md-10 col-md-offset-1 col-xl-8 col-xl-offset-2">
                     <section class="gifts_form">
                         <form action="<?=SITE_MAIN_BASE.'gifts/'.$action?>" method="post" class="c-form" onsubmit="return form_checker(event)" enctype="multipart/form-data">
                             <div class="row">

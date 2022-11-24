@@ -1,83 +1,167 @@
-function form_checker(event) {
-        
+async function form_checker() {
+    
     // ***** Variables utiles 
 
-    const formulaire = event.target;
+    const formulaires = document.querySelectorAll('[is-checked]');
+    let y;
+    
+    for(formulaire of formulaires) {
+        
+        let formState = true;
 
-    let formState = true,
-        required_state,
-        format_state;
+        // ***** Vérification des inputs / textarea
 
-    // ***** Vérification des inputs / textarea
+        let form_inputs = formulaire.querySelectorAll('input,textarea,select'), i;
 
-    let form_inputs = formulaire.querySelectorAll('input,textarea,select'), i;
+        for(i = 0; i < form_inputs.length; ++i) {
+            const element = form_inputs[i];
+            let name = element.getAttribute('name');
 
-    for(i = 0; i < form_inputs.length; ++i) {
-        let element = form_inputs[i],
-            name = element.getAttribute('name');
+                name = name.replaceAll("][","--");
+                name = name.replaceAll("]","--");
+                name = name.replaceAll("[","--");
+
+            const element_name = name.split('--');
+
+            form_inputs[i].element_name = element_name;
+        } 
+        
+        form_inputs.forEach((index) => {
+            index.addEventListener('change', async (event) => {
+                formState = await check_form_fields(index,index.element_name,true);
+            });
+        });
+        
+        formulaire.addEventListener('submit', async (event) => {
             
-            name = name.replace("][","--");
-            name = name.replace("]","--");
-            name = name.replace("[","--");
-
-            var element_name = name.split('--');
-
-        if (element_name[0] !== undefined) {
-            switch (element_name[0]) {
-                case 'required':
-                    required_state = checkRequired(element);
-                    if (!required_state) {
-                        formState = false;
-                    }
-                    break;
-                case 'alpha':
-                case 'alphanum':
-                case 'url':
-                case 'email':
-                case 'phone':
-                case 'checkbox':
-                case 'image_normal':
-                    format_state = checkFormat(element,element_name[0]);
-                    if (!format_state) {
-                        formState = false;
-                    }
-                    break;
-                default:
-                    break;
+            event.preventDefault();
+            
+            let is_error = false;
+            
+            for(index of form_inputs) {
+                formState = await check_form_fields(index,index.element_name,true);
+                
+                if(!formState)
+                {
+                    is_error = true;
+                }
+            };
+            
+            if(!is_error) {
+                if(formulaire.hasAttribute('is-ajax'))
+                {
+                    ajax_submit(formulaire);
+                }
+                else
+                {
+                    formulaire.submit();
+                }
             }
+            
+        });
+    }
+};
+
+form_checker();
+
+async function check_form_fields(element,element_name,formState) {
+    let required_state,
+        format_state;
+    
+    if (element_name[0] !== undefined) {
+        switch (element_name[0]) {
+            case 'required':
+                required_state = checkRequired(element);
+                if (!required_state) {
+                    formState = false;
+                }
+                break;
+            case 'alpha':
+            case 'alphanum':
+            case 'url':
+            case 'mail':
+            case 'phone':
+            case 'checkbox':
+            case 'image_normal':
+                format_state = checkFormat(element,element_name[0]);
+                if (!format_state) {
+                    formState = false;
+                }
+                break;
+            default:
+                break;
         }
+    }
 
-        if (element_name[1] !== undefined && formState) {
-            switch (element_name[1]) {
-                case 'alpha':
-                case 'alphanum':
-                case 'url':
-                case 'email':
-                case 'phone':
-                case 'checkbox':
-                case 'image_normal':
-                    format_state = checkFormat(element,element_name[1]);
-                    if (!format_state) {
-                        formState = false;
-                    }
-                    break;
-                default:
-                    break;
-            }
+    if (element_name[1] !== undefined && formState) {
+        switch (element_name[1]) {
+            case 'alpha':
+            case 'alphanum':
+            case 'url':
+            case 'mail':
+            case 'phone':
+            case 'checkbox':
+            case 'image_normal':
+                format_state = checkFormat(element,element_name[1]);
+                if (!format_state) {
+                    formState = false;
+                }
+                break;
+            default:
+                break;
         }
     }
     
-    // ***** Si toutes les données du formulaire sont conformes aux formats attendus, on l'envoit vers le PHP
+    if(element.dataset.verification)
+    {
+        const parent = element.closest('.c-form_field'),
+              route = element.dataset.verification;
+        
+        let value = element.value,
+            data = new FormData();
+        
+        data.append('value',value);
+        
+        const result = await check_specific_field(data,route);
+        
+        if(result.error)
+        {
+            parent.classList.add('error');
+            parent.setAttribute('data-message', result.message);
+            formState = false;
+        }
+    }
+    
+    if(element.dataset.same)
+    {
+        const target = document.querySelector(element.dataset.same),
+              parent = element.closest('.c-form_field');
+        
+        let value = element.value,
+            value2 = target.value;
+        
+        if(value !== value2)
+        {
+            parent.classList.add('error');
+            parent.setAttribute('data-message', 'Les deux mots de passe ne correspondent pas');
+            formState = false;
+        }
+    }
+    
+    return formState;
+}
 
-    if(formState) 
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-};
+async function check_specific_field(data,route) {
+    const response = await fetch('ajax/'+route+'.php', {
+        method:'post',
+        body: data
+    });
+    
+    const text = await response.text(),
+          json = JSON.parse(text);
+    
+    return json;
+}
 
 // ***** Vérification des éléments requis
 
@@ -142,9 +226,9 @@ function checkFormat(element, format) {
         PATTERN_TITLE_email = "L\'email doit être écrit au format contact@exemple.com",
 
         PATTERN_url = /^http(s)?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=])*$/,
-        PATTERN_TITLE_url = "Votre url doit être au format http(s)://www.votre-url.com",
+        PATTERN_TITLE_url = "L'url doit être au format http(s)://www.ton-url.com",
 
-        PATTERN_TITLE_file = "L'extension de votre fichier n'est pas supportée.";
+        PATTERN_TITLE_file = "L'extension du fichier n'est pas supportée.";
     
     // ***** Pas de valeur ? Le champ n'est pas requis, et n'a pas été renseigné : on skippe
     
@@ -186,7 +270,7 @@ function checkFormat(element, format) {
                 return true;
             }
             break;
-        case 'email':
+        case 'mail':
             if (!PATTERN_email.test(value)) {
                 parent.classList.add('error');
                 parent.setAttribute('data-message', PATTERN_TITLE_email);
@@ -207,10 +291,11 @@ function checkFormat(element, format) {
             }
             break;
         case 'image_normal':
-            
-            const extensions = element.getAttribute('accept').split(','),
+            const test = element.getAttribute('name'),
+                  extensions = element.getAttribute('accept').split(','),
                   split = value.split("."),
                   ext = "." + split[split.length - 1].toLowerCase();
+            
             if (extensions.indexOf(ext) !== -1) {
                 parent.classList.remove('error');
                 return true;
@@ -239,6 +324,32 @@ function seek_modal(event) {
         setTimeout(function(){
             modale.parentNode.removeChild(modale);
         },700);
+    }
+}
+
+async function ajax_submit(form) {
+    const route = form.getAttribute('action'),
+          parent = form.closest('.u-panel_content'),
+          response = await fetch(route, {
+                method:'post',
+                body: new FormData(formulaire)
+            });
+    
+    const text = await response.text(),
+          json = JSON.parse(text);
+    
+    if(json.message) 
+    {
+        form.classList.add('inactive');
+        
+        const message = document.createElement('div');
+        message.classList.add('u-panel_message','inactive');
+        message.innerHTML = '<b>'+json.message+'</b>';
+        parent.append(message);
+        
+        setTimeout(function(){
+            message.classList.remove('inactive');
+        },400);
     }
 }
 

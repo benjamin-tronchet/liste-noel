@@ -207,3 +207,103 @@ function closeModal(modale) {
 }
 
 modal();
+
+function panel() {
+            
+    // Ouverture du panel
+    const panel_buttons = document.querySelectorAll('[data-panel]'),
+          panel = document.querySelector('.u-panel');
+    
+    if(panel.classList.contains('active'))
+    {
+        document.querySelector('.u-panel_content').classList.add('active');
+    }
+    
+    Array.from(panel_buttons).forEach(function(Object){
+        Object.addEventListener('click',function(event){
+            event.preventDefault();
+            const target = Object.dataset['panel'],
+                  data = Object.dataset['post'];
+            open_panel(target,data);
+        });
+    });
+
+    // Fermeture du panel
+    document.addEventListener('click', function(event) {
+        if(event.target.hasAttribute('data-close-panel'))
+        {
+            const active_panel = document.querySelector('.u-panel.active');
+            if(active_panel)
+            {
+                close_panel(active_panel);
+            }
+        }
+    });
+    
+    function open_panel(target,data) {
+        const test = fetch('includes/modals/'+target+'.php', {
+            method:'post',
+            headers: {
+                'Content-Type':'application/x-www-form-urlencoded'
+            },
+            body: data
+        })
+        .then(data => data.text())
+        .then(function (text) {
+            panel.innerHTML += text;
+        })
+        .then(() => setTimeout(
+            function() {
+                panel.classList.add('active');
+                panel.querySelector('.u-panel_content').classList.add('active');
+                input_file();
+                form_checker();
+            }, 50
+        ));
+    }
+    
+    function close_panel(target) {
+        const element = target.querySelector('.u-panel_content');
+        
+        element.classList.remove('active');
+        panel.classList.remove('active');
+        
+        setTimeout(
+            () => {
+                element.parentNode.removeChild(element);
+                form_checker();
+            },
+            500
+        );
+    }
+}
+
+panel();
+
+function notifications() {
+    const notif = document.querySelector('[data-notif]');
+    
+    if(notif) {
+        
+        setTimeout(() => notif.classList.add('active'), 500);
+        
+        setTimeout(() => notif.classList.add('remove'), 5500);
+        
+        setTimeout(() => notif.parentNode.removeChild(notif), 6300);
+    }
+}
+
+notifications();
+
+function menu() {
+    const buttons = document.querySelectorAll('[data-action=menu]');
+    
+    for(button of buttons)
+    {
+        button.addEventListener('click',(event) => {
+            event.target.closest('nav').classList.toggle('active');
+        });
+    }
+}
+
+menu();

@@ -9,149 +9,115 @@ $UserManager = new UserManager(DB_USERS);
 // Liste des cadeaux
 //***********************************************
 
-function lists(GiftManager $manager) 
+function lists(GiftManager $manager, UserManager $UserManager, Tools $tools) 
 {
-    $gifts_list = $manager->lists($_SESSION['user']->id_user());
+    $santa_text = "Astuce :<br/>Tu peux ajouter une nouvelle idée avec le bouton en haut de page";
     
-    $santa_text = "Astuce :<br/>Tu peux ajouter une nouvelle idée avec le bouton en haut à droite";
-    include 'views/GiftsView_list.php';
-}
-
-//***********************************************
-// Création d'un cadeau
-//***********************************************
-
-function create_gift() 
-{
-    // Tentative de récupération de la session temporaire, si existante
-    if(!empty($_SESSION['temp_data']))
+    if(isset($_GET['id']))
     {
-        $gift = new Gift($_SESSION['temp_data']);
+        $id_user = $_GET['id'];
+        
+        if($UserManager->get($id_user))
+        {
+            if($id_user == $_SESSION['user']->id_user())
+            {
+                $_SESSION['notif'] = (object) [
+                    "type"      => "warning",
+                    "title"     => "Bien essayé",
+                    "message"   => "Tu n'as pas le droit de voir ta propre liste !<br/>En revanche, tu peux toujours ajouter de nouvelles idées ;)"
+                ];
+                
+                $tools->redirect('gifts/list/');
+            }
+            else
+            {
+                if(!in_array($id_user,$_SESSION['has-seen']))
+                {
+                    $_SESSION['has-seen'][] = $id_user;
+                }
+                
+                $gifts_list = $manager->lists($id_user);
+                $user = $UserManager->get($id_user);
+                
+                $santa_text = $user->username()." a été très sage cette année, alors il est temps d'aligner la moula pour lui faire plaisir !";
+                
+                include 'views/ListView.php';
+            }
+        }
+        else
+        {
+            $_SESSION['notif'] = (object) [
+                "type"      => "error",
+                "title"     => "Erreur",
+                "message"   => "Cet utilisateur n'existe pas"
+            ];
+            
+            $tools->redirect('groups/');
+        }
     }
-    // Sinon, création de l'objet vide
     else
     {
-        $gift = new Gift([]);
+        $gifts_list = $manager->lists($_SESSION['user']->id_user());
+        include 'views/GiftsView_list.php';
     }
-    
-    // Définition des actions et variables utiles
-    $action = "add/";
-    $page_title = "Ajouter un cadeau";
-    $santa_text = "Astuce :<br/>Les champs indiqués en rouge sont obligatoires, pense à les remplir !";
-    
-    // Inclusion de la vue
-    include 'views/GiftsView_edit.php';
 }
 
 //***********************************************
 // Edition d'un cadeau
 //***********************************************
 
-function edit_gift(GiftManager $manager, Tools $tools) 
+function edit_gift(GiftManager $manager, Tools $tools, FormTools $form_tools) 
 {
-    if(isset($_GET['id']))
-    {
-        $id_gift =  $_GET['id'];
-        if($manager->exists($id_gift))
-        {
-            $gift = $manager->get($id_gift);
-            
-            if(!empty($_SESSION['temp_data']))
-            {
-                $gift = new Gift($_SESSION['temp_data']);
-            }
-    
-            // Définition des actions et variables utiles
-            $action = "update/".$id_gift.'/';
-            $page_title = "Modifier un cadeau";
-            $santa_text = "Astuce :<br/>Les champs indiqués en rouge sont obligatoires, pense à les remplir !";
-            $_SESSION['edit_gift'] = $id_gift;
-
-            // Inclusion de la vue
-            include 'views/GiftsView_edit.php';
-        }
-        else
-        {
-            $tools->redirect('gifts/list/');
-        }
-    }
-    else
-    {
-        $tools->redirect('gifts/list/');
-    }
-}
-
-//***********************************************
-// Ajout / modification d'un cadeau en base de données
-//***********************************************
-
-function update_gift(GiftManager $manager, Tools $tools, FormTools $form_tools, $creation) 
-{
-    // Création de l'URL de redirection en cas d'erreur
-    if($creation)
-    {
-        $url_redirect = 'gifts/create/';
-    }
-    else 
-    {
-        $url_redirect = 'gifts/edit/'.$_GET['id'];
-    }
     
     $form_data = $form_tools->check_form_fields($_POST,$_FILES);
     
     if($form_data)
     {
-        // Création de l'objet Article
+        // Création de l'objet Gift
         $new_gift = new Gift($form_data);
-
-        // Création et assignation du slug en ID
-        $new_gift->setId_gift($tools->createSlug($new_gift->name()));
+        
+        // Création ou Modification ?
+        $creation = ($new_gift->id_gift()) ? false : true;
 
         // Case : création d'un nouveau gift
         if($creation)
         {   
-            // Création du gift en BDD et renvoi vers la page de succès
-            if(!$manager->exists($new_gift->id_gift()))
-            {
-                $manager->create($new_gift);
-                $tools->redirect('gifts/list/');
-            }
-            else
-            {
-                $_SESSION['temp_data'] = $form_data;
-                $tools->redirect($url_redirect.'?info=duplicate');
-            }
+            // Enregistrement du cadeau
+            $manager->create($new_gift);
+            
+            // Redirection avec notification
+            $_SESSION['notif'] = (object) [
+                "type"      => "success",
+                "title"     => "Élément ajouté !",
+                "message"   => "Cette nouvelle idée vient d'être ajoutée à ta liste"
+            ];
+
+            $tools->redirect('gifts/list/');
         }
 
-        // Case : update d'un gift existante
+        // Case : update d'un gift existant
         else
         {
-            // On vérifie que l'ID transmis est correct et que le gift existe
-            if(
-                !empty($_GET['id']) &&
-                !empty($_SESSION['edit_gift']) && 
-                $_SESSION['edit_gift'] === $_GET['id']
-            )
-            {
-                // Stockage de l'ID transmis et destruction de la session
-                $id = $_GET['id'];
-                unset($_SESSION['edit_gift']);
-
-                $new_gift->setId_gift($id);
-
-                $manager->update($new_gift);
-                $tools->redirect('gifts/list/');
-            }
-            else
-            {
-                $tools->redirect('gifts/list/');
-            }
+            $manager->update($new_gift);
+            
+            $_SESSION['notif'] = (object) [
+                "type"      => "success",
+                "title"     => "Élément modifié !",
+                "message"   => "Ton idée de cadeau a bien été modifiée"
+            ];
+            
+            $tools->redirect('gifts/list/');
         }
     }
     else
     {
-        // Un ou plusieurs champ(s) ne correspond(ent) pas au(x) format(s) attendu(s)
-        $tools->redirect($url_redirect.'?info=wrong_format');
+        $_SESSION['notif'] = (object) [
+            "type"      => "error",
+            "title"     => "Erreur",
+            "message"   => "Un des champs renseignés contient des erreurs"
+        ];
+
+        $tools->redirect('gifts/list/');
     }
 }
 
@@ -161,67 +127,137 @@ function update_gift(GiftManager $manager, Tools $tools, FormTools $form_tools, 
 
 function delete_gift(GiftManager $manager, Tools $tools) 
 {
-    if(!empty($_GET['id']))
-    {
-        $manager->delete($_GET['id']);
-        $tools->redirect('gifts/list/');
-    }
-    else
-    {
-        $tools->redirect('gifts/list/');
-    }
+   
+    $manager->delete($_POST['id_gift']);
+    
+    $_SESSION['notif'] = (object) [
+        "type"      => "success",
+        "title"     => "Cadeau supprimé",
+        "message"   => "Ce cadeau a été supprimé de ta liste"
+    ];
+
+    $tools->redirect('gifts/list/');
 }
 
 //***********************************************
 // Blocage d'un cadeau par un utilisateur
 //***********************************************
 
-function block_gift(GiftManager $manager, Tools $tools) 
+function lock_gift(GiftManager $manager, Tools $tools) 
 {
-    if(!empty($_POST['id_gift']) && !empty($_POST['id_user']))
+    if(!empty($_POST['id_gift']) && !empty($_POST['id_user']) && !empty($_POST['id_locker']))
     {
         $id_gift = $_POST['id_gift'];
         $id_user = $_POST['id_user'];
+        $id_locker = $_POST['id_locker'];
         
-        $user_list = $manager->lists($id_user);
-        $gift = $user_list[$id_gift];
+        $gift = $manager->get($id_gift,$id_user);
         
-        $gift->setBooked($_SESSION['user']->id_user());
-        
-        $manager->update($gift,$id_user);
-        
-        $tools->redirect('liste/view/'.$id_user.'/');
-    }
-    else
-    {
-        $tools->redirect('dashboard/');
-    }
-}
-
-//***********************************************
-// Déblocage d'un cadeau par un utilisateur
-//***********************************************
-
-function unblock_gift(GiftManager $manager, Tools $tools) 
-{
-    if(!empty($_POST['id_gift']) && !empty($_POST['id_user']))
-    {
-        $id_gift = $_POST['id_gift'];
-        $id_user = $_POST['id_user'];
-        
-        $user_list = $manager->lists($id_user);
-        $gift = $user_list[$id_gift];
-        
-        if($gift->booked() === $_SESSION['user']->id_user())
+        if(!$gift)
         {
-            $gift->setBooked('0');
-            $manager->update($gift,$id_user);
-            $tools->redirect('liste/view/'.$id_user.'/');
+            $_SESSION['notif'] = (object) [
+                "type"      => "error",
+                "title"     => "Erreur",
+                "message"   => "Le cadeau que tu veux réserver n'existe pas."
+            ];
+
+            $tools->redirect('gifts/list/'.$id_user.'/');
+            die();
+        }
+        
+        if($gift->lock($id_locker))
+        {
+            $_SESSION['notif'] = (object) [
+                "type"      => "success",
+                "title"     => "Réservé",
+                "message"   => "Ce cadeau a bien été réservé.<br/>Il est maintenant indisponible pour les autres utilisateurs."
+            ];
+
+            $tools->redirect('gifts/list/'.$id_user.'/');
+            die();
+        }
+        else
+        {
+            $_SESSION['notif'] = (object) [
+                "type"      => "error",
+                "title"     => "Erreur",
+                "message"   => "Une erreur est survenue lors de la réservation du cadeau."
+            ];
+
+            $tools->redirect('gifts/list/'.$id_user.'/');
+            die();
         }
     }
     else
     {
-        $tools->redirect('dashboard/');
+        $_SESSION['notif'] = (object) [
+            "type"      => "error",
+            "title"     => "Erreur",
+            "message"   => "Des informations sont manquantes pour réserver le cadeau."
+        ];
+    
+        $tools->redirect('gifts/list/'.$id_user.'/');
+    }
+}
+
+//***********************************************
+// Débloquage d'un cadeau par un utilisateur
+//***********************************************
+
+function unlock_gift(GiftManager $manager, Tools $tools) 
+{
+    if(!empty($_POST['id_gift']) && !empty($_POST['id_user']) && !empty($_POST['id_locker']))
+    {
+        $id_gift = $_POST['id_gift'];
+        $id_user = $_POST['id_user'];
+        $id_locker = $_POST['id_locker'];
+        
+        $gift = $manager->get($id_gift,$id_user);
+        
+        if(!$gift)
+        {
+            $_SESSION['notif'] = (object) [
+                "type"      => "error",
+                "title"     => "Erreur",
+                "message"   => "Le cadeau que tu veux débloquer n'existe pas."
+            ];
+
+            $tools->redirect('gifts/list/'.$id_user.'/');
+            die();
+        }
+        
+        if($gift->unlock($id_locker))
+        {
+            $_SESSION['notif'] = (object) [
+                "type"      => "success",
+                "title"     => "Réservé",
+                "message"   => "Ce cadeau a bien été débloqué. <br/>Les autres utilisateurs peuvent à présent le réserver."
+            ];
+
+            $tools->redirect('gifts/list/'.$id_user.'/');
+            die();
+        }
+        else
+        {
+            $_SESSION['notif'] = (object) [
+                "type"      => "error",
+                "title"     => "Erreur",
+                "message"   => "Une erreur est survenue lors du débloquage du cadeau."
+            ];
+
+            $tools->redirect('gifts/list/'.$id_user.'/');
+            die();
+        }
+    }
+    else
+    {
+        $_SESSION['notif'] = (object) [
+            "type"      => "error",
+            "title"     => "Erreur",
+            "message"   => "Des informations sont manquantes pour débloquer le cadeau."
+        ];
+    
+        $tools->redirect('gifts/list/'.$id_user.'/');
     }
 }
 

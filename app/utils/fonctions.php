@@ -16,7 +16,7 @@
         $now = time();
         $difference = $now - $_SESSION['max_lifetime'];
         
-        // S'il s'est écoulé plus de 20 min >>> destruction de l'utilisateur // pro // panier // commande enregistrés
+        // S'il s'est écoulé plus de 20 min >>> destruction de la session
         if($difference > 1800) 
         {
             unset($_SESSION['user']);

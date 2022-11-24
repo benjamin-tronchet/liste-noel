@@ -45,6 +45,21 @@ switch($page_name)
             // Création d'un utilisateur
             case 'create':
                 create_user($UserManager, $tools, $form_tools);
+            break; 
+                
+            // Update d'un utilisateur
+            case 'update':
+                update_user($UserManager, $tools, $form_tools);
+            break;     
+                
+            // Mot de passe oublié
+            case 'forget-password':
+                forget_password($UserManager, $tools, $form_tools);
+            break;    
+                
+            // Reset Password
+            case 'reset-password':
+                reset_password($UserManager, $tools, $form_tools);
             break;
         }
     break;
@@ -54,9 +69,6 @@ switch($page_name)
     // ========================================================
 
     case 'dashboard':
-        include 'controller/UsersController.php';
-        $GiftManager = new GiftManager(DB_GIFTS);
-        $users_list = $UserManager->lists();
         $santa_text = "Que souhaites-tu faire, mon enfant ?";
         $user = $_SESSION['user'];
         include 'views/DashboardView.php';
@@ -72,27 +84,12 @@ switch($page_name)
         {       
             // Affiche la liste des cadeaux
             case 'list':
-                lists($GiftManager, $tools, $form_tools);
-            break;
-                
-            // Création d'un cadeau
-            case 'create':
-                create_gift();
-            break;
-                
-            // Ajout d'un cadeau en base de données
-            case 'add':
-                update_gift($GiftManager, $tools, $form_tools, true);
-            break;
-                
-            // Ajout d'un cadeau en base de données
-            case 'update':
-                update_gift($GiftManager, $tools, $form_tools, false);
+                lists($GiftManager, $UserManager, $tools);
             break;
                 
             // Ajout d'un cadeau en base de données
             case 'edit':
-                edit_gift($GiftManager, $tools);
+                edit_gift($GiftManager, $tools, $form_tools);
             break;
                 
             // Supprime un cadeau
@@ -101,31 +98,53 @@ switch($page_name)
             break;
                 
             // Bloque un cadeau
-            case 'block':
-                block_gift($GiftManager, $tools);
+            case 'lock':
+                lock_gift($GiftManager, $tools);
             break;
                 
             // Bloque un cadeau
-            case 'unblock':
-                unblock_gift($GiftManager, $tools);
+            case 'unlock':
+                unlock_gift($GiftManager, $tools);
             break;
         }
     break;  
-    
+
     // ========================================================
-    // Affichage d'une liste
+    // Gestion des listes d'utilisateurs
     // ========================================================
 
-    case 'liste':
-        include 'controller/GiftsController.php';
+    case 'users':
+        include 'controller/UsersController.php';
         switch($action_name)
         {       
-            // Création d'un utilisateur
-            case 'view':
-                view_list($GiftManager, $UserManager, $tools, $form_tools);
+            // Voir la liste des autres utilisateurs
+            default:
+                users_list($UserManager, $tools);
             break;
         }
     break;  
+
+    // ========================================================
+    // Gestion des groupes
+    // ========================================================
+
+    case 'groups':
+        include 'controller/GroupsController.php';
+        switch($action_name)
+        {
+            case 'edit-user' :
+                edit_user($GroupManager, $tools, $form_tools);
+                break;
+                
+            case 'delete-user' :
+                delete_user($GroupManager, $tools, $form_tools);
+                break;
+                
+            default :
+                lists($GroupManager, $tools, $form_tools);
+            break;
+        }
+    break;   
 
     // ========================================================
     // Default page : afficher la notice

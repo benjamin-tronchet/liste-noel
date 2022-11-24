@@ -1,0 +1,63 @@
+@keyframes appears {
+    from {transform: translateX(100%); opacity:0}
+    75% {transform: translateX(0); opacity:1}
+    to {transform: translateX(5rem); opacity:1}
+}
+
+@keyframes disappears {
+    from {transform: translateX(5rem); opacity:1}
+    25% {transform: translateX(0); opacity:1}
+    to {transform: translateX(100%); opacity:0}
+}
+
+.u-notif {
+    @include position(fixed,110,4rem,0);
+    display:inline-flex;
+    align-items:flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding:2.5rem 8rem 2.5rem 3rem;
+    border-radius:10px 0 0 10px;
+    box-shadow:1px 1px 3px rgba($dark,.5),inset 1px 1px 3px rgba($light,.1);
+    transform: translateX(100%); 
+    opacity:0;
+    max-width:80vw;
+    
+    @media (min-width:$screen-sm) {
+        max-width:40vw;
+    }
+    
+    @media (min-width:$screen-md) {
+        max-width:25vw;
+    }
+    
+    &_title {
+        margin-bottom:1rem;
+        font-size:130%;
+        @extend %font-bold;
+    }
+    
+    &_text {
+        font-size:90%;
+    }
+    
+    &.success {
+        background:rgba(#307d0e,.9);
+    }
+    
+    &.warning {
+        background:rgba(#a64523,.9);
+    }
+    
+    &.error {
+        background:rgba(#a12f2f,.9);
+    }
+    
+    &.active {
+        animation:appears .6s ease-in-out forwards;
+    }
+
+    &.remove {
+        animation:disappears .6s ease-in-out forwards;
+    }
+}

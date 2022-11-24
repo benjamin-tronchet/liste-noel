@@ -116,23 +116,53 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-home:before {
+.icon-arrow:before {
   content: "\e900";
 }
+.icon-flamme:before {
+  content: "\e901";
+}
+.icon-star:before {
+  content: "\e902";
+}
+.icon-group:before {
+  content: "\e903";
+}
 .icon-pen:before {
+  content: "\e904";
+}
+.icon-question:before {
   content: "\e905";
+}
+.icon-trash:before {
+  content: "\e906";
+}
+.icon-no-eye:before {
+  content: "\e907";
+}
+.icon-close:before {
+  content: "\e908";
+}
+.icon-check:before {
+  content: "\e909";
+}
+.icon-groups:before {
+  content: "\e90a";
+}
+.icon-gift:before {
+  content: "\e90b";
+}
+.icon-user:before {
+  content: "\e90c";
+}
+.icon-home:before {
+  content: "\e90d";
 }
 .icon-cart:before {
   content: "\e93a";
 }
 .icon-lock:before {
   content: "\e98f";
-}
-.icon-gift:before {
-  content: "\e99f";
-}
-.icon-trash:before {
-  content: "\e9ad";
 }
 .icon-list:before {
   content: "\e9bb";
@@ -152,13 +182,6 @@
 .icon-cancel:before {
   content: "\ea0e";
 }
-.icon-close:before {
-  content: "\ea0f";
-}
-.icon-check:before {
-  content: "\ea10";
-}
 .icon-caret:before {
   content: "\ea43";
 }
-

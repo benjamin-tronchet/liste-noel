@@ -1,17 +1,38 @@
 {
-    "benjamin": {
+    "0": {
+        "id_user": "bamzorus",
+        "email": "b4m@hotmail.fr",
+        "username": "Bamzorus",
+        "password": "$2y$10$tHST5bP2ozvrIA8HkO4cVen.cdiNzUs\/I9bMrV5TJ8rYVph8DVKKW",
+        "token": "Oe3dR9Gtyx",
+        "img": "uploads\/images\/avatar.jpg",
+        "last_visit": 1669291614
+    },
+    "1": {
         "id_user": "benjamin",
+        "email": "benjamintronchet@gmail.com",
         "username": "Benjamin",
-        "password": "$2y$10$D\/giiD7gT2WAp8N8hQxSN.dCT\/UiXMIOkU.A.aX1swgu9bty5HFGa"
+        "password": "$2y$10$y\/wHgCJwGzaRpoPYehQkZuymM82G4WeSVHuYiOoLgjTpmrdgrNFdy",
+        "token": "Om0oGqhatP",
+        "img": "uploads\/images\/1573197609326_qztwJp.jpg",
+        "last_visit": 1669294529
     },
-    "regis": {
-        "id_user": "regis",
-        "username": "R\u00e9gis",
-        "password": "$2y$10$BliDWpNCFTZiKMpiZ8aS4edP0Z\/XzgqsVDMiy\/EWhoOF1vs35XHHe"
+    "3": {
+        "id_user": "zob",
+        "email": "zob@zob.fr",
+        "username": "zob",
+        "password": "$2y$10$3w90\/uzRm9YoiAtKJpPvi.rJafBdTyLZGqcxc.91Zsocftxw95mDG",
+        "token": "IYNOIysNQd",
+        "img": "uploads\/images\/avatar.jpg",
+        "last_visit": 1669296852
     },
-    "lambda": {
-        "id_user": "lambda",
-        "username": "Lambda",
-        "password": "$2y$10$UJXF\/.TXiQjZrP\/9GSHrQ.iRVLmFMUWpPbKNJI.HQkhBTT27bk1\/K"
+    "4": {
+        "id_user": "youpi",
+        "email": "youpi@youpi.fr",
+        "username": "youpi",
+        "password": "$2y$10$CHZ2cA4zB7J6IGu4z7W1Z.fFmrBqXGs6RG92kyW9ZjIrc\/wT0CE0W",
+        "token": "K74auGZQGT",
+        "img": "uploads\/images\/avatar.jpg",
+        "last_visit": 1669297055
     }
 }

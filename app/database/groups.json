@@ -1,0 +1,29 @@
+[
+    {
+        "id_group": "team-bernard",
+        "title": "Team Bernard",
+        "users": [
+            "bamzorus",
+            "benjamin",
+            "zob",
+            "youpi"
+        ]
+    },
+    {
+        "id_group": "team-isabelle",
+        "title": "Team Isabelle",
+        "users": [
+            "bamzorus",
+            "zob",
+            "youpi"
+        ]
+    },
+    {
+        "id_group": "team-jean-luc",
+        "title": "Team Jean-Luc",
+        "users": [
+            "bamzorus",
+            "zob"
+        ]
+    }
+]

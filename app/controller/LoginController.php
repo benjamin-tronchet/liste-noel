@@ -30,19 +30,33 @@ function login(UserManager $manager, Tools $tools, FormTools $form_tools)
 
     // Vérification que les données correspondent à ce qui est attendu
     $form_data = $form_tools->check_form_fields($_POST); 
+    
     if($form_data)  
     {
         // Login de l'utilisateur
-        $login = $manager->logIn($form_data['id_user'],$form_data['password']);
+        $login = $manager->logIn($form_data['email'],$form_data['password']);
+        
         if($login)
         {
             // Login réussi
+            $_SESSION['notif'] = (object) [
+                "type"      => "success",
+                "title"     => "Bienvenue ".$_SESSION['user']->username(),
+                "message"   => "Tu es maintenant connecté"
+            ];
+            
             $tools->redirect('dashboard/');
         }
         else
         {
             // Login échoué
-            $tools->redirect('identification/?info=warning_connexion');
+            $_SESSION['notif'] = (object) [
+                "type"      => "warning",
+                "title"     => "Attention",
+                "message"   => "Ton login / mot de passe ne correspond pas."
+            ];
+            
+            $tools->redirect('identification/');
         }
     }
     else
@@ -58,7 +72,17 @@ function login(UserManager $manager, Tools $tools, FormTools $form_tools)
 
 function logout(UserManager $manager, Tools $tools) 
 {   
+    // Déconnexion réussie
+    $_SESSION['notif'] = (object) [
+        "type"      => "success",
+        "title"     => "A bientôt ".$_SESSION['user']->username()." !",
+        "message"   => "Tu es à présent déconnecté"
+    ];
+    
     unset($_SESSION['user']);
+    unset($_SESSION['has-seen']);
+    unset($_SESSION['last_visit']);
+    
     $tools->redirect('identification/');
 }
 

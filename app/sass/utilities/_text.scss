@@ -23,11 +23,15 @@
     }
     
     &_big {
-        font-size: 125%;
+        font-size: 120%;
     }
     
     &_bigger {
         font-size: 150%;
+    }
+    
+    &_underline {
+        text-decoration:underline;
     }
     
     &_vertical {

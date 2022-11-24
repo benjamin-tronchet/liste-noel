@@ -6,12 +6,14 @@ class Gift implements JsonSerializable
     // ========================================================
     
     private $_id_gift;
+    private $_publish;
     private $_name;
     private $_price;
     private $_desc;
     private $_store;
     private $_url_shop;
-    private $_img;
+    private $_img = DEFAULT_GIFT;
+    private $_id_user;
     private $_booked = "0";
     
     // ========================================================
@@ -47,6 +49,10 @@ class Gift implements JsonSerializable
     {
         return $this->_id_gift;
     }
+    public function publish()
+    {
+        return $this->_publish;
+    }
     public function name()
     {
         return $this->_name;
@@ -71,6 +77,10 @@ class Gift implements JsonSerializable
     {
         return $this->_img;
     }
+    public function id_user()
+    {
+        return $this->_id_user;
+    }
     public function booked()
     {
         return $this->_booked;
@@ -85,6 +95,24 @@ class Gift implements JsonSerializable
         if (is_string($id_gift))
         {
             $this->_id_gift = $id_gift;
+        }
+    }
+    public function setPublish($publish)
+    {
+        if(is_numeric($publish))
+        {
+            $publish = (int) $publish;
+        }
+        else 
+        {
+            return false;
+        }
+        
+        $date = date('d/m/Y',$publish);
+        $date = date_parse($date);
+        if (is_int($publish) && checkdate($date['month'], $date['day'], $date['year']))
+        {
+            $this->_publish = $publish;
         }
     }
     public function setName($name)
@@ -130,6 +158,15 @@ class Gift implements JsonSerializable
             $this->_img = $img;
         }
     }
+    public function setId_user($id_user)
+    {
+        $userManager = new UserManager(DB_USERS);
+        
+        if (is_string($id_user) && $userManager->get($id_user))
+        {
+            $this->_id_user = $id_user;
+        }
+    }
     public function setBooked($booked)
     {
         if (is_string($booked))
@@ -146,14 +183,48 @@ class Gift implements JsonSerializable
     public function jsonSerialize() {
         return [
             'id_gift' => $this->id_gift(),
+            'publish' => $this->publish(),
             'name' => $this->name(),
             'price' => $this->price(),
             'desc' => $this->desc(),
             'store' => $this->store(),
             'url_shop' => $this->url_shop(),
             'img' => $this->img(),
+            'id_user' => $this->id_user(),
             'booked' => $this->booked()
         ];
+    }
+
+    public function lock($id_user) {
+        $UserManager = new UserManager(DB_USERS);
+        $GiftManager = new GiftManager(DB_GIFTS);
+        
+        if($UserManager->get($id_user) && !$this->_booked)
+        {
+            $this->setBooked($id_user);
+            $GiftManager->update($this);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function unlock($id_user) {
+        $GiftManager = new GiftManager(DB_GIFTS);
+        
+        if($this->booked() == $id_user)
+        {
+            $this->setBooked('0');
+            $GiftManager->update($this);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        
     }
 }
 ?>

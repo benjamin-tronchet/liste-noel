@@ -1,34 +1,110 @@
 .p-nav {
     
-    padding:10px 0;
-    text-align:right;
-    color:$secondary-dark;
-    font-size:14px;
-    
-    @media (min-width:$screen-md) {
+    .container,
+    .row {
+        height:100%;
         
-        @include position(absolute,1,0,0px);
-        
+        &>div {
+            height:100%;
+        }
     }
     
-    @media (min-width:$screen-xl) {
-        font-size:16px;
-        padding:15px 0;
+    @include position(fixed,99,0,0,auto,0);
+    background:$secondary-dark;
+    height:60px;
+    
+    [class^='icon'] {
+        @include icon(18px);
+        color:$light;
     }
     
-    a {
-        @include flex(inline-flex,center);
+    a:hover,
+    button:hover {
+        opacity:.6;
+        transition-delay:0s;
     }
     
-    .icon-home {
+    &_wrapper {
+        @include flex(flex,center,space-between);
+        width:100%;
+        height:100%;
+    }
+    
+    &_avatar {
+        width:30px;
+        height:30px;
+        border-radius:50%;
+        border:solid 2px $light;
+        margin-left:10px;
+    }
+    
+    &_menu {
+        @include position(absolute,10,100%,-15px,auto,-15px);
+        @include flex(flex,flex-end,flex-start,column);
+        overflow:hidden;
+        background:$secondary-dark;
+        padding:0 30px;
+        @include transi(.3s);
         
-        @include icon(16px);
-        margin-right:10px;
-        
-        @media (min-width:$screen-lg) {
-            @include icon(24px);
+        @media (min-width:$screen-sm) {
+            padding:0 0;
+            position:relative;
+            top:0;
+            flex-direction:row;
         }
         
+        &_item a,
+        &_item button {
+            @include flex(inline-flex,center,flex-end);
+            height:50px;
+            text-transform: uppercase;
+            color:$light;
+            
+            [class^='icon'] {
+                margin-left:10px;
+            }
+            
+            @media (min-width:$screen-sm) {
+                height:30px;
+                font-size:14px;
+            }
+        }
+        
+        &_item {
+            max-height:0px;
+            opacity:0;
+            @include transi(.3s);
+            width:100%;
+            text-align:right;
+            
+            &+& {
+                border-top:solid 1px rgba($light,.2);
+            }
+            
+            @media (min-width:$screen-sm) {
+                max-height:50px;
+                opacity:1;
+                width:auto;
+                margin-left:15px;
+                
+                &+& {
+                    border:none;
+                    border-left:solid 1px rgba($light,.2);
+                    padding-left:15px;
+                }
+            }
+        }
     }
     
+    
+    &.active {
+        .p-nav_menu {
+            padding:20px 30px;
+            
+            &_item {
+                max-height:50px;
+                opacity:1;
+            }
+        }
+    }
 }

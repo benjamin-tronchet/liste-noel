@@ -10,7 +10,7 @@ class User implements JsonSerializable
     private $_username;
     private $_password;
     private $_token;
-    private $_img;
+    private $_img = DEFAULT_AVATAR;
     private $_last_visit;
     
     // ========================================================
@@ -84,7 +84,7 @@ class User implements JsonSerializable
     }
     public function setEmail($email)
     {
-        if (is_string($email) && filter_var($email,FILTER_SANITIZE_EMAIL))
+        if (is_string($email) && filter_var($email,FILTER_VALIDATE_EMAIL))
         {
             $this->_email = $email;
         }
@@ -120,10 +120,10 @@ class User implements JsonSerializable
     public function setLast_visit($last_visit)
     {
         $date = date('d/m/Y',$last_visit);
-        $date = date_parse($date_format);
-        if (is_string($last_visit) && checkdate($date['month'], $date['day'], $date['year']))
+        $date = date_parse($date);
+        if (is_int($last_visit) && checkdate($date['month'], $date['day'], $date['year']))
         {
-            $this->_last_visite = $last_visit;
+            $this->_last_visit = $last_visit;
         }
     }
     
@@ -147,11 +147,53 @@ class User implements JsonSerializable
         $this->setToken($token);
     }
     
+    public function generate_slug() {
+        $tools = new Tools();
+        $slug = $tools->createSlug($this->username());
+        $this->setId_user($slug);
+    }
+    
+    public function has_new_gifts() {
+        $last_visit = $_SESSION['last_visit'];
+        $has_seen = $_SESSION['has-seen'];
+        $manager = new GiftManager(DB_GIFTS);
+        $gifts = $manager->lists($this->_id_user);
+        
+        foreach($gifts as $gift)
+        {
+            if($gift->publish() > $last_visit && !in_array($this->_id_user,$_SESSION['has-seen']))
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    public function has_common_group($id_user) {
+        $manager = new GroupManager(DB_GROUPS);
+        $list = $manager->lists();
+        $validation = false;
+        
+        foreach($list as $group) {
+            if($group->is_member($id_user) && $group->is_member($this->_id_user))
+            {
+                $validation = true;
+            }
+        }
+        
+        return $validation;
+    }
+    
     public function jsonSerialize() {
         return [
             'id_user' => $this->id_user(),
+            'email' => $this->email(),
             'username' => $this->username(),
-            'password' => $this->password()
+            'password' => $this->password(),
+            'token' => $this->token(),
+            'img' => $this->img(),
+            'last_visit' => $this->last_visit()
         ];
     }
 }

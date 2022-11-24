@@ -1,0 +1,47 @@
+// ***** Burger Button (main nav)
+
+.u-burger {
+    
+    display:inline-block;
+    vertical-align: middle;
+    width:30px;
+    height:30px;
+    position:relative;
+    transition-delay:.3s;
+    cursor:pointer;
+
+    &_bar {
+        
+        @include dsp-ib(middle);
+        width:30px;
+        height:3px;
+        background:$light;
+        margin:auto;
+        @include position(absolute,1,3px,0,auto,0px);
+        transition:all .3s ease .3s, transform .3s ease 0s;
+        
+        &:nth-child(2) {
+            @include position(absolute,1,13px,0,auto,0px);
+        }
+
+        &:nth-child(3) {
+            @include position(absolute,1,23px,0,auto,0px);
+        }
+    }
+}
+
+.active {
+    
+    .u-burger {
+
+        &_bar {
+            top:13px;
+            transform: rotate(-135deg);
+            transition:all .3s ease 0s, transform .3s ease .3s;
+
+            &:nth-child(2), &:nth-child(3) {
+                transform: rotate(135deg);
+            }
+        }
+    }
+}

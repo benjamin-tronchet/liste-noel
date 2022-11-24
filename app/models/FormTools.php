@@ -298,7 +298,6 @@ class FormTools
         {
             if(!empty($data))
             {
-                var_dump($data);
                 switch($key)
                 {
                     // Type de données attendues : email

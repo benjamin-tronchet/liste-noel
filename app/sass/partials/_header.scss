@@ -1,5 +1,6 @@
 .p-header {
     
+    margin-top:60px;
     padding-top:30px;
     padding-bottom:30px;
     border-bottom:solid 1px $secondary-dark;
@@ -8,7 +9,7 @@
     
     @media (min-width:$screen-sm) {
         
-        padding-top:10rem;
+        padding-top:5rem;
         
     }
     

@@ -5,34 +5,31 @@
     
     <div class="page-background"></div>
     
-    <div id="wrapper">
-        <div class="p-header_fixed">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-xl-8 col-xl-offset-2">
-                        <header class="p-header u-text_right">
-                            <?php include 'includes/nav.php'; ?>
-                            <h1 class="u-title_medium">Gérer ma liste de cadeaux</h1>
-                            <a href="gifts/create/" class="u-button--primary p-header_button"><span class="icon-gift"></span> Ajouter une idée</a>
-                        </header> 
-                    </div>
-                </div>
-            </div>
-        </div>
+    <?php
+        include 'includes/nav.php';
+    ?>
+    <div id="wrapper"> 
         <div class="container">
             <div class="row">
-                <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-xl-8 col-xl-offset-2">
-                    <h2 class="u-title_small">
-                        Mes idées de cadeaux :
-                    </h2>
+                <div class="col-xs-12 col-md-10 col-md-offset-1 col-xl-8 col-xl-offset-2">
+                    <header class="p-header">
+                        <h1 class="u-title_medium u-color_secondary-dark">Gérer ma</h1>
+                        <h1 class="u-title_big--alt" text="liste de cadeaux">liste de cadeaux</h1>
+                    </header>
                     <section class="gifts_list">
+                        <p class="gifts_list_add">
+                            <button class="u-button--primary" data-panel="edit-gift"><span class="icon-gift"></span> Ajouter une idée</button>
+                        </p>
+                        <h2 class="gifts_list_title u-title_medium">
+                            Mes idées :
+                        </h2>
                 <?php
                     if(empty($gifts_list))
                     {
                 ?>
-                        <p class="gifts_list_item">
+                        <p class="u-text_big u-text_center" style="width:100%">
                             <em>
-                                Il n'y a aucun cadeau ajouté à votre liste pour le moment.
+                                Il n'y a aucune idée de cadeau sur ta liste pour le moment.
                             </em>
                         </p>
                 <?php
@@ -43,12 +40,21 @@
                         {
                 ?>
                         <div class="gifts_list_item">
+                            <div class="gifts_list_item_img">
+                                <p class="gifts_list_item_img_wrapper">
+                                    <img src="<?=$gift->img()?>" alt="<?=$gift->name()?>">
+                                </p>
+                            </div>
                             <p class="gifts_list_item_text">
-                                <strong><?=$gift->name()?></strong>
+                                <strong class="gifts_list_item_title"><?=$gift->name()?></strong>
+                                <br>
+                                <span class="gifts_list_item_price">
+                                    Ordre de prix : <?=$gift->price()?>€
+                                </span>
                             </p>
                             <p class="gifts_list_item_buttons">
-                                <a href="gifts/edit/<?=$gift->id_gift()?>" class="u-button--primary"><span class="icon-pen"></span> Modifier</a>
-                                <a href="gifts/delete/<?=$gift->id_gift()?>" class="u-button--secondary-dark" data-modal="delete" data-post="name=<?=$gift->name()?>&id=<?=$gift->id_gift()?>"><span class="icon-trash"></span> Supprimer</a>
+                                <button class="u-button--primary" data-panel="edit-gift" data-post="id_gift=<?=$gift->id_gift()?>"><span class="icon-pen"></span> Modifier</button>
+                                <button class="u-button--secondary-dark" data-panel="delete-gift" data-post="name=<?=$gift->name()?>&id=<?=$gift->id_gift()?>"><span class="icon-trash"></span> Supprimer</button>
                             </p>
                         </div>
                 <?php

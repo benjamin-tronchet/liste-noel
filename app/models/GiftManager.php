@@ -8,16 +8,18 @@ class GiftManager extends Manager
     
     public function create(Gift $gift) 
     {
-        $gifts = json_decode(file_get_contents($this->_db));
-        $id_user = $_SESSION['user']->id_user();
+        // Création et assignation du slug
+        $tools = new Tools();
+        $gift->setId_gift($tools->createSlug($gift->name()));
         
-        $gifts_list = $this->lists($id_user);
-        $gifts_list[$gift->id_gift()] = $gift;
+        // Récupération de la liste des gifts
+        $gifts_list = $this->lists();
         
-        $gifts->$id_user = $gifts_list;
+        // Ajout du cadeau à la liste
+        $gifts_list[] = $gift;
         
         // Encodage au format JSON
-        $json = json_encode($gifts, JSON_PRETTY_PRINT);
+        $json = json_encode($gifts_list, JSON_PRETTY_PRINT);
 
         // Réécriture du fichier JSON
         file_put_contents($this->_db, $json);
@@ -27,15 +29,18 @@ class GiftManager extends Manager
     // Modification d'un gift
     // ========================================================
     
-    public function update(Gift $gift, $id_user = false) 
-    {
-        $id_user = (!$id_user) ? $_SESSION['user']->id_user() : $id_user;
-        
+    public function update(Gift $gift)
+    {   
         // Récupération du gift à modifier
-        $gift_old = $this->get($gift->id_gift(),$id_user);
+        $gift_old = $this->get($gift->id_gift(),$gift->id_user());
+        
+        if(!$gift_old)
+        {
+            return false;
+        }
         
         // Suppression de l'ancienne cover si elle a été modifiée
-        if($gift_old->img() && ($gift_old->img() !== $gift->img()))
+        if($gift_old->img() !== $gift->img() && $gift_old->img() !== DEFAULT_GIFT)
         {
             unlink(realpath(__DIR__ . '/..').'/'.$gift_old->img());
         }
@@ -46,45 +51,71 @@ class GiftManager extends Manager
             $gift->setId_gift($tools->createSlug($gift->name()));
         }
         
-        $gifts = json_decode(file_get_contents($this->_db));
+        $gifts_list = $this->lists();
         
-        $gifts_list = $this->lists($id_user);
-        unset($gifts_list[$gift->id_gift()]);
+        // Suppression de l'ancien gift
+        foreach($gifts_list as $key => $current_gift)
+        {
+            if($current_gift->id_gift() == $gift_old->id_gift())
+            {
+                unset($gifts_list[$key]);
+            }
+        }
         
-        $gifts_list[$gift->id_gift()] = $gift;
-        
-        $gifts->$id_user = $gifts_list;
+        $gifts_list[] = $gift;
         
         // Encodage au format JSON
-        $json = json_encode($gifts, JSON_PRETTY_PRINT);
+        $json = json_encode($gifts_list, JSON_PRETTY_PRINT);
 
         // Réécriture du fichier JSON
         file_put_contents($this->_db, $json);
     }
     
     // ========================================================
-    // Ajout d'un gift
+    // Suppression d'un gift
     // ========================================================
     
     public function delete($id) 
     {
-        $gift = $this->get($id);
-        $gifts = json_decode(file_get_contents($this->_db));
-        $id_user = $_SESSION['user']->id_user();
-        $gifts_list = $this->lists($_SESSION['user']->id_user());
         
-        // Suppression de l'ancienne cover si elle a été modifiée
-        if($gift->img())
+        $gifts_list = $this->lists();
+        $id_user = $_SESSION['user']->id_user();
+        $gift = $this->get($id,$_SESSION['user']->id_user());
+        
+        // Envoi d'une notification par email si le cadeau était réservé
+        if($gift->booked())
+        {
+            $manager = new UserManager(DB_USERS);
+            $user = $manager->get($gift->booked());
+            $owner = $manager->get($gift->id_user());
+            
+            $email_address = $user->email();
+            $email_link = SITE_MAIN_BASE.'liste/view/'.$owner->id_user().'/';
+            $user_name = $user->username();
+            $gift_name = $gift->name();
+            $owner_name = $owner->username();
+            $formulaire = 'gift-deleted';
+        
+            include(realpath(__DIR__).'/../form/form-mail-contact.php');
+        }
+        
+        // Suppression de l'image sauf si image par défaut
+        if($gift->img() && $gift->img() !== DEFAULT_GIFT)
         {
             unlink(realpath(__DIR__ . '/..').'/'.$gift->img());
         }
         
-        unset($gifts_list[$id]);
-        
-        $gifts->$id_user = $gifts_list;
+        // Suppression de l'ancien gift
+        foreach($gifts_list as $key => $current_gift)
+        {
+            if($current_gift->id_gift() == $gift->id_gift())
+            {
+                unset($gifts_list[$key]);
+            }
+        }
         
         // Encodage au format JSON
-        $json = json_encode($gifts, JSON_PRETTY_PRINT);
+        $json = json_encode($gifts_list, JSON_PRETTY_PRINT);
 
         // Réécriture du fichier JSON
         file_put_contents($this->_db, $json);
@@ -94,64 +125,64 @@ class GiftManager extends Manager
     // Récupération d'un gift par son id
     // ========================================================
     
-    public function get($id, $id_user = false) 
+    public function get($id, $id_user) 
     {
-        $id_user = (!$id_user) ? $_SESSION['user']->id_user() : $id_user;
-
-        if($this->exists($id,false,$id_user))
+        $gifts_list = $this->lists();
+        
+        if(empty($gifts_list))
         {
-            $gifts_list = $this->lists($id_user);
-            $gift = $gifts_list[$id];
+            return false;
         }
-        
-        return $gift;
-    }
-    
-    // ========================================================
-    // Vérification de l'existence d'un id
-    // ========================================================
-    
-    public function exists($id, $update = false, $id_user = false) 
-    {
-        $id_user = (!$id_user) ? $_SESSION['user']->id_user() : $id_user;
-        
-        $gifts_list = $this->lists($id_user);
-        foreach($gifts_list as $id_gift => $gift)
+        else
         {
-            if($id_gift === $id)
+            foreach($gifts_list as $gift)
             {
-                return true;
+                if($gift->id_gift() == $id && $gift->id_user() == $id_user)
+                {
+                    return $gift;
+                }
             }
+            
+            return false;
         }
-        return false;
     }
     
     // ========================================================
     // Lister tous les gifts
     // ========================================================
     
-    public function lists($id_user) 
+    public function lists($id_user = false) 
     {
-        $gifts_array = [];
-        
         $gifts = json_decode(file_get_contents($this->_db));
-        $user_gifts = '';
         
-        if(isset($gifts->$id_user))
+        $gifts_dates = [];
+        $gifts_list = [];
+        
+        foreach($gifts as $gift)
         {
-            $user_gifts = $gifts->$id_user;
+            $current_gift = new Gift((array) $gift);
             
-            foreach($user_gifts as $gift)
+            if($id_user)
             {
-                $gift_array = (array) $gift;
-                $current_gift = new Gift($gift_array);
-                $gifts_array[$current_gift->id_gift()] = $current_gift;
+                if($current_gift->id_user() == $id_user)
+                {
+                    $gifts_list[] = $current_gift;
+                    $gifts_dates[] = $current_gift->publish();
+                }
+            }
+            else
+            {
+                $gifts_list[] = $current_gift;
+                $gifts_dates[] = $current_gift->publish();
             }
         }
         
-        ksort($gifts_array);
+        if(!empty($gifts_list))
+        {
+            array_multisort($gifts_dates, SORT_DESC, $gifts_list);
+        }
         
-        return $gifts_array;
+        return $gifts_list;
     }
 }
 ?>

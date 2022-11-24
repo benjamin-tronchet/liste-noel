@@ -1,5 +1,5 @@
 <?php
-    
+
 // ========================================================
 // Inclusion des fonctions utiles
 // ========================================================
@@ -28,48 +28,44 @@ spl_autoload_register('chargerClasses');
 // ======================================================== 
 
 session_start();
+
+// ========================================================
+// Gestionnaire de notifications
+// ======================================================== 
+
 if(!isset($_SESSION['santa']))
 {
     $_SESSION['santa'] = "expand";
 }
 
+if(isset($_SESSION['notif']))
+{
+    $notification = $_SESSION['notif'];
+    unset($_SESSION['notif']);
+}
+
 // ========================================================
-// Gestionnaire d'erreurs
+// Gestionnaire du panel
 // ======================================================== 
 
-$class_modal = '';
-
-if(isset($_GET['info']))
+$panel = [];
+if(isset($_GET['panel']))
 {
-    $class_modal = 'active';
+    $panel['type'] = $_GET['panel'];
     
-    switch ($_GET['info'])
+    if(isset($_GET['data']) && !empty($_GET['data']))
     {
-        case "success_create_user":
-            $modal_title = "<span class='icon-check'></span> Utilisateur créé !";
-            $modal_text = "Votre compte utilisateur a été créé avec succès !<br/><br/>Vous pouvez maintenant commencer à éditer votre liste d'idées ou à accéder à celles des autres utilisateurs.";
-            break;
-            
-        case "existing_user":
-            $modal_title = "<span class='icon-cancel'></span> Utilisateur existant !";
-            $modal_text = "Ce nom a déjà été choisi par un autre utilisateur.<br/><br/>Veuillez re-créer votre compte en choisissant un autre nom d'utilisateur.";
-            break;
-            
-        case "wrong_format":
-            $modal_title = "<span class='icon-cancel'></span> Mauvais format";
-            $modal_text = "Certaines données entrées dans le formulaire ne respectent pas le format attendu.";
-            break;
-            
-        case "warning_connexion":
-            $modal_title = "<span class='icon-cancel'></span> Erreur de connexion";
-            $modal_text = "Le mot de passe ne correspond pas à l'utilisateur sélectionné.";
-            break;
-            
-        case "duplicate":
-            $modal_title = "<span class='icon-cancel'></span> Création impossible";
-            $modal_text = "Un élément de votre liste porte déjà ce nom, veuillez en choisir un différent";
-            break;
+        $panel['data'] = $_GET['data'];
     }
+}
+
+// ========================================================
+// Gestionnaire des listes vues
+// ======================================================== 
+
+if(!isset($_SESSION['has-seen']))
+{
+    $_SESSION['has-seen'] = [];
 }
 
 // ========================================================

@@ -8,10 +8,67 @@ class UserManager extends Manager
     
     public function create(User $user) 
     {
+        if($this->get($user->email()) || $this->get($user->id_user()))
+        {
+            return false;
+        }
+        
+        $users_list = $this->lists();
+        $users_list[] = $user;
+        
+        // Encodage au format JSON
+        $json = json_encode($users_list, JSON_PRETTY_PRINT);
+
+        // Réécriture du fichier JSON
+        file_put_contents($this->_db, $json);
+        
+        return true;
+    }
+    
+    // ========================================================
+    // Update d'un utilisateur
+    // ========================================================
+    
+    public function update(User $user) 
+    {
+        $user_old = $this->get($user->token());
+        
+        // Suppression de l'ancienne cover si elle a été modifiée
+        if($user_old->img() !== $user->img() && $user_old->img() !== DEFAULT_AVATAR)
+        {
+            unlink(realpath(__DIR__ . '/..').'/'.$user_old->img());
+        }
+        
+        // Récupération du token et de la last visit
+        
+        if(empty($user->token()))
+        {
+            $user->setToken($user_old->token());
+        }
+        
+        if(empty($user->last_visit()))
+        {
+            $user->setLast_visit($user_old->last_visit());
+        }
+        
+        if(empty($user->password()))
+        {
+            $user->setPassword($user_old->password());
+        }
+        
         $users_list = $this->lists();
         
-        $id_user = $user->id_user();
-        $users_list[$id_user] = $user;
+        // Suppression de l'ancien user
+        foreach($users_list as $key => $current_user)
+        {
+            if($current_user->token() == $user->token())
+            {
+                unset($users_list[$key]);
+            }
+        }
+        
+        // Ajout du user modifié
+        $users_list[] = $user;
         
         // Encodage au format JSON
         $json = json_encode($users_list, JSON_PRETTY_PRINT);
@@ -25,10 +82,9 @@ class UserManager extends Manager
     // Retourne true s'il correspond, et false s'il ne correspond pas
     // ========================================================
     
-    public function matchPassword($id, $password) 
+    public function matchPassword($email, $password) 
     {
-        $users_list = $this->lists();
-        $user = $users_list[$id];
+        $user = $this->get($email);
         
         // Vérification du mot de passe
         if(password_verify($password, $user->password())) {
@@ -36,9 +92,7 @@ class UserManager extends Manager
             // Vérification de la validité du hash : si non valide, on le réenregistre.
             if (password_needs_rehash($user->password(), PASSWORD_DEFAULT)) {
                 $user->hash();
-                $users_list[$id_user] = $user;
-                $json = json_encode($users_list, JSON_PRETTY_PRINT);
-                file_put_contents($this->_db, $json);
+                $this->update($user);
             }
             return true;
             
@@ -48,32 +102,54 @@ class UserManager extends Manager
     }
     
     // ========================================================
-    // Récupération d'un utilisateur par son id
+    // Vérification que l'email n'existe pas déjà
+    // Retourne true s'il existe, et false s'il n'existe pas
+    // ========================================================
+    
+    public function matchEmail($email) 
+    {
+        $users_list = $this->lists();
+        
+        if(empty($users_list))
+        {
+            return false;
+        }
+        
+        foreach($users_list as $user)
+        {
+            if($user->email() == $email)
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    // ========================================================
+    // Récupération d'un utilisateur par son id / email / token
     // ========================================================
     
     public function get($id) 
     {
         $users_list = $this->lists();
-        $user = $users_list[$id];
         
-        return $user;
-    }
-    
-    // ========================================================
-    // Vérification de l'existence d'un id
-    // ========================================================
-    
-    public function exists($id) 
-    {
-        $users_list = $this->lists();
-        foreach($users_list as $id_user => $user)
+        if(empty($users_list))
         {
-            if($id_user === $id)
-            {
-                return true;
-            }
+            return false;
         }
-        return false;
+        else
+        {
+            foreach($users_list as $user)
+            {
+                if($user->id_user() == $id || $user->email() == $id || $user->token() == $id)
+                {
+                    return $user;
+                }
+            }
+            
+            return false;
+        }
     }
     
     // ========================================================
@@ -83,17 +159,21 @@ class UserManager extends Manager
     public function lists() 
     {
         $users_array = [];
+        $users_names = [];
         
         $users = json_decode(file_get_contents($this->_db));
         
-        foreach($users as $user)
+        if(!empty($users))
         {
-            $user_array = (array) $user;
-            $current_user = new User($user_array);
-            $users_array[$current_user->id_user()] = $current_user;
+            foreach($users as $user)
+            {
+                $current_user = new User((array) $user);
+                $users_array[] = $current_user;
+                $users_names[] = $current_user;
+            }
+
+            array_multisort($users_names, SORT_ASC, $users_array);
         }
-        
-        ksort($users_array);
         
         return $users_array;
     }
@@ -105,22 +185,25 @@ class UserManager extends Manager
     // Renvoie true si login réussi / false si login échoué
     // ========================================================
     
-    public function logIn($id,$password) 
+    public function logIn($email,$password) 
     {
-        $connexion = $this->matchPassword($id,$password);
-        
-        if($connexion) 
+        if(!$this->matchEmail($email))
         {
-            $_SESSION['user'] = $this->get($id);
-
-            // Tout est ok, renvoi vrai
-            return true;
-        }
-        else 
-        {
-            // Mot de passe incorrect, renvoi false
             return false;
-        } 
+        }
+        
+        if(!$this->matchPassword($email,$password))
+        {
+            return false;
+        }
+        
+        $user = $_SESSION['user'] = $this->get($email);
+        
+        $_SESSION['last_visit'] = ($user->last_visit()) ? $user->last_visit() : time();
+        
+        $user->setLast_visit(time());
+        $this->update($user);
+        return true;
     }
 }
 ?>

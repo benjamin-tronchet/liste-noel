@@ -33,10 +33,17 @@
         </div>
 <?php
     }
+    global $panel;
 ?>
     </div>
-    <div class="u-panel">
-        
+    <div class="u-panel <?=(!empty($panel)) ? 'active' : ''?>">
+        <button class="u-panel_close" data-close-panel></button>
+    <?php
+        if(!empty($panel))
+        {
+            include 'includes/modals/'.$panel['type'].'.php';
+        }
+    ?>
     </div>
     <div class="u-panel_overlay"></div>
     

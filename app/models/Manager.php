@@ -13,7 +13,7 @@ class Manager
     
     public function __construct($db) 
     {
-        $this->setDb(realpath('./').'/'.$db);
+        $this->setDb(realpath(__DIR__.'/../').'/'.$db);
     }
     
     // ========================================================

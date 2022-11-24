@@ -9,8 +9,10 @@
 // ***** Imports Utilities
 
 @import 'utilities/_animations';
+@import 'utilities/_burger';
 @import 'utilities/_buttons';
 @import 'utilities/_modal';
+@import 'utilities/_notif';
 @import 'utilities/_panel';
 @import 'utilities/_titles';
 
@@ -32,4 +34,6 @@
 @import 'pages/_identification';
 @import 'pages/_dashboard';
 @import 'pages/_gifts';
+@import 'pages/_groups';
 @import 'pages/_list';
+@import 'pages/_users';

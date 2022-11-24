@@ -18,6 +18,15 @@
 ?>
 <!DOCTYPE html>
     <html lang="fr">
-    <?php include 'includes/head.php'; ?>
+    <?php 
+        include 'includes/head.php'; 
+        
+        global $notification;
+        
+        if(!empty($notification))
+        {
+            include 'includes/notif.php';
+        }
+    ?>
     
             
