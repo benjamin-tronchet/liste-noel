@@ -41,7 +41,7 @@ function create_user(UserManager $manager, Tools $tools, FormTools $form_tools)
         
         $_SESSION['notif'] = (object) [
             "type"      => "success",
-            "title"     => "Bienvenue $new_user->username()",
+            "title"     => "Bienvenue ".$new_user->username(),
             "message"   => "Ton compte a bien été créé.<br/><br/>Tu es maintenant connecté"
         ];
 
