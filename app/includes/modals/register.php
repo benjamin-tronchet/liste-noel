@@ -18,7 +18,7 @@
         </div>
         <div class="c-form_field">
             <label class="c-form_field_label" data-required>Nom d'utilisateur :</label>
-            <input name="required[username]" data-required="Indique un nom d'utilisateur" placeholder="Ton nom d'utilisateur" type="text" autocomplete="off" data-verification="user-username">
+            <input name="required[alphanum][username]" data-required="Indique un nom d'utilisateur" placeholder="Ton nom d'utilisateur" type="text" autocomplete="off" data-verification="user-username">
         </div>
         <div class="c-form_field c-form_file">
             <label class="c-form_field_label" data-required>Avatar <small>(facult.)</small> :</label>
