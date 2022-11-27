@@ -49,16 +49,46 @@ class ImageManipulator
         if (is_resource($this->image)) {
             imagedestroy($this->image);
         }
-
+        
+        $exif = exif_read_data($file);
+        
+        
         list ($this->width, $this->height, $type) = getimagesize($file);
 
         switch ($type) {
             case IMAGETYPE_GIF  :
                 $this->image = imagecreatefromgif($file);
                 break;
+                
             case IMAGETYPE_JPEG :
-                $this->image = imagecreatefromjpeg($file);
+                $imageResource = imagecreatefromjpeg($file);
+                
+                // Fixing Photo orientation (mobile phones)
+                if(!empty($exif['Orientation']))
+                {
+                    switch ($exif['Orientation']) {
+                        case 3:
+                        $image = imagerotate($imageResource, 180, 0);
+                            break;
+                        case 6:
+                        $image = imagerotate($imageResource, -90, 0);
+                            break;
+                        case 8:
+                        $image = imagerotate($imageResource, 90, 0);
+                            break;
+                        
+                        default:
+                        $image = $imageResource;
+                    } 
+                }
+                else 
+                {
+                    $image = $imageResource;
+                }
+                
+                $this->image = $image;
                 break;
+                
             case IMAGETYPE_PNG  :
                 $this->image = imagecreatefrompng($file);
                 break;
@@ -104,6 +134,7 @@ class ImageManipulator
         if (!is_resource($this->image)) {
             throw new RuntimeException('No image set');
         }
+        
         if ($constrainProportions) {
             if ($this->width / $this->height > $width / $height) {
                 $width  = round($height * $this->width / $this->height);

@@ -79,7 +79,7 @@ class GroupManager extends Manager
             
             if($id_user)
             {
-                if(in_array($id_user,$current_group->users()))
+                if($current_group->is_member($id_user))
                 {
                     $groups_array[] = $current_group;
                 }
@@ -91,6 +91,25 @@ class GroupManager extends Manager
         }
         
         return $groups_array;
+    }
+    
+    // ========================================================
+    // Update ID_user in all groups
+    // ========================================================
+    
+    public function update_id_user($old_id,$new_id) 
+    {
+        $groups_list = $this->lists($old_id);
+        
+        if(!empty($groups_list))
+        {
+            foreach($groups_list as $group)
+            {
+                $group->remove_user($old_id);
+                $group->add_user($new_id);
+                $this->update($group);
+            }
+        }
     }
 }
 ?>

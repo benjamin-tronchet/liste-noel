@@ -62,10 +62,7 @@ body {
 #wrapper {
     
     max-width:100vw;
-    
-    @media (min-width:$screen-sm) {
-        padding-bottom:12rem;
-    }
+    padding-bottom:12rem
 }
 
 button,

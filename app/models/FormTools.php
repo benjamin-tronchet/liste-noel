@@ -540,6 +540,7 @@ class FormTools
 
                     // *** Redimensionnement de l'image
                     $manipulator = new ImageManipulator($data['tmp_name']);
+                    
                     $newImage = $manipulator->resample($width, $height, $crop);
                     
                     if($crop)

@@ -59,9 +59,7 @@ function create_user(UserManager $manager, Tools $tools, FormTools $form_tools)
 //***********************************************
 
 function update_user(UserManager $manager, Tools $tools, FormTools $form_tools) 
-{
-    $current_user = $_SESSION['user'];
-    
+{   
     $form_data = $form_tools->check_form_fields($_POST,$_FILES);
     
     if($form_data)

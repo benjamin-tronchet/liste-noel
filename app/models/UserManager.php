@@ -39,6 +39,13 @@ class UserManager extends Manager
             unlink(realpath(__DIR__ . '/..').'/'.$user_old->img());
         }
         
+        // Modification des groupes si l'id / username a été modifié
+        if($user_old->id_user() !== $user->id_user())
+        {
+            $GroupManager = new GroupManager(DB_GROUPS);
+            $GroupManager->update_id_user($user_old->id_user(),$user->id_user());
+        }
+        
         // Récupération du token et de la last visit
         
         if(empty($user->token()))
