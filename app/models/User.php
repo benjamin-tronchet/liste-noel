@@ -185,6 +185,7 @@ class User implements JsonSerializable
         return $validation;
     }
     
+    #[\ReturnTypeWillChange]
     public function jsonSerialize() {
         return [
             'id_user' => $this->id_user(),
@@ -197,4 +198,3 @@ class User implements JsonSerializable
         ];
     }
 }
-?>

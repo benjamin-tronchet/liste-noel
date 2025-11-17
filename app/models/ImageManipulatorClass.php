@@ -46,7 +46,7 @@ class ImageManipulator
             throw new InvalidArgumentException("Image file $file is not readable");
         }
 
-        if (is_resource($this->image)) {
+        if (is_resource($this->image) || is_object($this->image)) {
             imagedestroy($this->image);
         }
         
@@ -108,7 +108,7 @@ class ImageManipulator
      */
     public function setImageString($data)
     {
-        if (is_resource($this->image)) {
+        if (is_resource($this->image) || is_object($this->image)) {
             imagedestroy($this->image);
         }
 
@@ -131,7 +131,7 @@ class ImageManipulator
      */
     public function resample($width, $height, $constrainProportions = true)
     {
-        if (!is_resource($this->image)) {
+        if (!is_resource($this->image) && !is_object($this->image)) {
             throw new RuntimeException('No image set');
         }
         
@@ -174,7 +174,7 @@ class ImageManipulator
      */
     public function enlargeCanvas($width, $height, array $rgb = array(), $xpos = null, $ypos = null)
     {
-        if (!is_resource($this->image)) {
+        if (!is_resource($this->image) && !is_object($this->image)) {
             throw new RuntimeException('No image set');
         }
         
@@ -210,7 +210,7 @@ class ImageManipulator
      */
     public function crop($x1, $y1 = 0, $x2 = 0, $y2 = 0)
     {
-        if (!is_resource($this->image)) {
+        if (!is_resource($this->image) && !is_object($this->image)) {
             throw new RuntimeException('No image set');
         }
         if (is_array($x1) && 4 == count($x1)) {
@@ -241,10 +241,10 @@ class ImageManipulator
      */
     protected function _replace($res)
     {
-        if (!is_resource($res)) {
+        if (!is_resource($this->image) && !is_object($this->image)) {
             throw new UnexpectedValueException('Invalid resource');
         }
-        if (is_resource($this->image)) {
+        if (is_resource($this->image) || is_object($this->image)) {
             imagedestroy($this->image);
         }
         $this->image = $res;

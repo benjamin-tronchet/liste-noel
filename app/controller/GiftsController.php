@@ -136,7 +136,7 @@ function delete_gift(GiftManager $manager, Tools $tools)
         "message"   => "Ce cadeau a été supprimé de ta liste"
     ];
 
-    $tools->redirect('gifts/list/');
+    //$tools->redirect('gifts/list/');
 }
 
 //***********************************************

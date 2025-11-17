@@ -85,7 +85,7 @@ class Group implements JsonSerializable
     // Fonctions utilitaires
     // ========================================================
 
-    
+    #[\ReturnTypeWillChange]
     public function jsonSerialize() {
         return [
             'id_group' => $this->id_group(),

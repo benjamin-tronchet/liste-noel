@@ -56,15 +56,15 @@ $mail = new PHPMailer(true);
 
 try {
     $mail->isSMTP();
-    $mail->Host = 'ssl0.ovh.net';
+    $mail->Host = 'mail.mailo.com';
     $mail->SMTPAuth   = true;      
-    $mail->Username = 'info@qui-veut-quoi.fr';
-    $mail->Password = 'b4mz0rus@Quiveutquoi';                       
+    $mail->Username = 'benjamintronchet@mailo.com';
+    $mail->Password = 'b4mz0rus@Mailo';                       
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;           
     $mail->Port       = 465;   
 
     $mail->CharSet = 'UTF-8';
-    $mail->setFrom('info@qui-veut-quoi.fr','Qui veut Quoi ?');
+    $mail->setFrom('benjamintronchet@mailo.com','Application Noël');
     $mail->addAddress($email_address);
     $mail->Subject = $email_subject;
     $mail->isHTML(true);
@@ -77,5 +77,3 @@ try {
         "message"   => "Une erreur est survenue durant l'envoi du mail : ".$mail->ErrorInfo."<br/><br/>Veuillez réessayer."
     ];
 }
-
-?>

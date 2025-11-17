@@ -179,7 +179,7 @@ class Gift implements JsonSerializable
     // Fonctions utilitaires
     // ========================================================
 
-    
+    #[\ReturnTypeWillChange]
     public function jsonSerialize() {
         return [
             'id_gift' => $this->id_gift(),

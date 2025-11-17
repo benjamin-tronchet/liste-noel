@@ -90,7 +90,7 @@ class GiftManager extends Manager
             $owner = $manager->get($gift->id_user());
             
             $email_address = $user->email();
-            $email_link = SITE_MAIN_BASE.'liste/view/'.$owner->id_user().'/';
+            $email_link = SITE_MAIN_BASE.'gifts/list/'.$owner->id_user().'/';
             $user_name = $user->username();
             $gift_name = $gift->name();
             $owner_name = $owner->username();
