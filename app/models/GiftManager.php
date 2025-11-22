@@ -155,7 +155,6 @@ class GiftManager extends Manager
     {
         $gifts = json_decode(file_get_contents($this->_db));
         
-        $gifts_dates = [];
         $gifts_list = [];
         
         foreach($gifts as $gift)
@@ -167,22 +166,22 @@ class GiftManager extends Manager
                 if($current_gift->id_user() == $id_user)
                 {
                     $gifts_list[] = $current_gift;
-                    $gifts_dates[] = $current_gift->publish();
                 }
             }
             else
             {
                 $gifts_list[] = $current_gift;
-                $gifts_dates[] = $current_gift->publish();
             }
         }
         
         if(!empty($gifts_list))
         {
-            array_multisort($gifts_dates, SORT_DESC, $gifts_list);
+            usort($gifts_list, fn($a, $b) =>
+                ($b->is_featured() <=> $a->is_featured())
+                ?: ($b->publish() <=> $a->publish())
+            );
         }
         
         return $gifts_list;
     }
 }
-?>

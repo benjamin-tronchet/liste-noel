@@ -40,6 +40,11 @@
                         {
                 ?>
                         <div class="gifts_list_item">
+                        <?php if($gift->is_featured()):?>
+                            <span class="gifts_list_item_featured">
+                                <img src="img/star.png" alt="Star">
+                            </span>
+                        <?php endif; ?>
                             <div class="gifts_list_item_img">
                                 <p class="gifts_list_item_img_wrapper">
                                     <img src="<?=$gift->img()?>" alt="<?=$gift->name()?>">

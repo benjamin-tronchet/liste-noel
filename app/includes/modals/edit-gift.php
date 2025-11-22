@@ -44,6 +44,19 @@
             <label class="c-form_field_label" data-required>Où est-ce qu'on peut le trouver ?</label>
             <input name="required[store]" data-required="Il faut me dire où on peut le trouver !" placeholder="Nom du/des magasins, site internet, nom de l'artisan ..." type="text" value="<?=$gift->store()?>">
         </div>
+        
+        <div class="c-form_field--aside">
+            <label class="c-form_field_label">Mettre en avant ?</label>
+            <p class="c-form_field_info">
+                <strong>Non</strong>&nbsp;&nbsp;
+                <label class="switch">
+                    <input type="checkbox" name="is_featured" value="1" <?=($gift->is_featured()) ? "checked" : ""?>/>
+                    <span class="slider"></span>
+                </label>
+                &nbsp;&nbsp;<strong>Oui</strong><br>
+                <em>Cocher cette case fait remonter ce cadeau en tête de liste, pour le mettre en valeur par rapport aux autres.</em>
+            </p>
+        </div>
         <div class="c-form_field">
             <label class="c-form_field_label">On peut en savoir un peu plus ?</label>
             <textarea name="desc" placeholder="Donnez un maximum de détails pour ne pas que l'on se trompe : taille (pour les vêtements), pointure (pour les chaussures), coloris, marque, modèle exact, précisez si c'est un cadeau groupé (pour les couples) etc."><?=$gift->desc()?></textarea>

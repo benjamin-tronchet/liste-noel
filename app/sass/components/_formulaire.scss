@@ -60,6 +60,16 @@
             }
         
         }
+
+        &_info {
+            padding:10px 10px 0;
+
+            em {
+                display:inline-block;
+                margin-top: 10px;
+                font-size:90%;
+            }
+        }
         
         &[data-hidden] {
             
@@ -103,6 +113,13 @@
                     right:20px;
                 }
             }
+        }
+
+        &--aside {
+            @extend .c-form_field;
+            border-top:dotted 1px;
+            border-bottom:dotted 1px;
+            padding:10px 0;
         }
         
         ::placeholder {
@@ -509,5 +526,51 @@
         max-height:0px;
         @include transi(.35s);
         opacity:0;
+    }
+}
+
+/* Création d'un switch en CSS */
+.switch {
+    display:inline-block;
+    width:60px;
+    height:30px;
+    position:relative;
+    vertical-align:middle;
+    .slider {
+        position:absolute;
+        top:0; right:0; bottom:0; left:0;
+        cursor:pointer;
+        transition: .3s;
+        border-radius:30px;
+        background:#cccccc;
+        box-shadow: inset 2px 2px 5px rgba(0,0,0,.3);
+        &:before {
+            content:'';
+            display:inline-block;
+            width:19px;
+            height:19px;
+            position:absolute;
+            left:5px;
+            top:5px;
+            background:#808080;
+            border-radius:50%;
+            transition: .3s;
+            box-shadow:1px 1px 1px rgba(0,0,0,.5), inset 1px 1px 1px rgba(255,255,255,.5);
+        }
+    }
+    input {
+        opacity:0;
+        width:0;
+        height:0;
+        position:absolute;
+        &:checked {
+            &+.slider {
+                background:#26B99A;
+                &:before {
+                    left:34px;
+                    background:#cccccc;
+                }
+            }
+        }
     }
 }

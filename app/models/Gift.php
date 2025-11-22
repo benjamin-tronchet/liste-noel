@@ -11,6 +11,7 @@ class Gift implements JsonSerializable
     private $_price;
     private $_desc;
     private $_store;
+    private $_is_featured = "0";
     private $_url_shop;
     private $_img = DEFAULT_GIFT;
     private $_id_user;
@@ -68,6 +69,10 @@ class Gift implements JsonSerializable
     public function store()
     {
         return $this->_store;
+    }
+    public function is_featured()
+    {
+        return $this->_is_featured;
     }
     public function url_shop()
     {
@@ -144,6 +149,12 @@ class Gift implements JsonSerializable
             $this->_store = $store;
         }
     }
+    public function setIs_featured($is_featured)
+    {
+        if(is_numeric($is_featured)) {
+            $this->_is_featured = $is_featured;
+        }
+    }
     public function setUrl_shop($url_shop)
     {
         if (filter_var($url_shop,FILTER_VALIDATE_URL))
@@ -188,6 +199,7 @@ class Gift implements JsonSerializable
             'price' => $this->price(),
             'desc' => $this->desc(),
             'store' => $this->store(),
+            'is_featured' => $this->is_featured(),
             'url_shop' => $this->url_shop(),
             'img' => $this->img(),
             'id_user' => $this->id_user(),
@@ -227,4 +239,3 @@ class Gift implements JsonSerializable
         
     }
 }
-?>
