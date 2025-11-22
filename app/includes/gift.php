@@ -1,4 +1,9 @@
 <div class="gifts_card <?=($gift->booked() && $gift->booked() !== $_SESSION['user']->id_user()) ? "is-booked" : ""?>">
+    <?php if($gift->is_featured()):?>
+    <span class="gifts_card_featured">
+        <img src="img/star.png" alt="Star">
+    </span>
+<?php endif; ?>
     <div class="gifts_card_img">
     <?php
         if($gift->booked() && $gift->booked() === $_SESSION['user']->id_user())

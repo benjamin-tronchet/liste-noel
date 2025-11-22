@@ -168,7 +168,6 @@
         border-bottom:solid 1px $secondary-dark;
         @include flex(flex);
         position:relative;
-        overflow:hidden;
         
         &+& {
             margin-top:30px;
@@ -185,6 +184,23 @@
         
         &.is-booked {
             border-bottom:none;
+        }
+
+        &_featured {
+            width:6.5rem;
+            height:6.5rem;
+            min-width:45px;
+            min-height:45px;
+            background:$secondary;
+            border-radius:50%;
+            @include flex(inline-flex,center,center);
+            @include position(absolute,10,0,auto,auto,0);
+            transform: translate(-33%,-33%) rotate(-20deg);
+            border:solid 5px $light;
+
+            img {
+                width:50%;
+            }
         }
         
         &_img {
